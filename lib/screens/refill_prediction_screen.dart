@@ -139,7 +139,8 @@ class _RefillPredictionScreenState extends State<RefillPredictionScreen> {
                   ),
                   Switch.adaptive(
                     value: _reminderSet,
-                    activeColor: AppColors.primary,
+                    activeTrackColor: AppColors.primary,
+                    activeThumbColor: Colors.white,
                     onChanged: (v) => setState(() => _reminderSet = v),
                   ),
                 ],

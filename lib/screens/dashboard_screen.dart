@@ -293,7 +293,8 @@ class _ScheduleCard extends StatelessWidget {
           ),
           Switch.adaptive(
             value: schedule.isEnabled,
-            activeColor: AppColors.primary,
+            activeTrackColor: AppColors.primary,
+            activeThumbColor: Colors.white,
             onChanged: (_) => state.toggleSchedule(schedule.id),
           ),
         ],
