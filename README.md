@@ -173,4 +173,11 @@ Typography: **Roboto** (system default) — clean and legible on Android
 ---
 
 **Built for Ugandan Tilapia Aquaculture Farms**  
-`GROUP 21· Makerere University · Kampala, Uganda
+**GROUP21** · Makerere University · Kampala, Uganda
+
+### Group Members
+- MUTSINZI ALEX — Student No: 25/U/03480PS — Reg No: 2500703480
+- KAHUMA WALID — Student No: 25/U/26619 — Reg No: 2500726619
+- MUGABI ROBINSON — Student No: 25/U/03456/EVE — Reg No: 2500703456
+- NANFUUKA BONITAH — Student No: 25/U/03527/PS — Reg No: 2500703527
+- OKUJA EMMANUEL DILA JOHN — Student No: 25/U/28777/PSA — Reg No: 2500728777
