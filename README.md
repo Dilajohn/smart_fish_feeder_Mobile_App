@@ -17,6 +17,16 @@
 | NANFUUKA BONITAH | 25/U/03527/PS | 2500703527 |
 | OKUJA EMMANUEL DILA JOHN | 25/U/28777/PSA | 2500728777 |
 
+### Project Images
+
+![Proposal Image 1](assets/readme_images/image_1.jpg)
+![Proposal Image 2](assets/readme_images/image_2.jpg)
+![Proposal Image 3](assets/readme_images/image_3.jpg)
+![Proposal Image 4](assets/readme_images/image_4.jpg)
+![Proposal Image 5](assets/readme_images/image_5.jpg)
+![Proposal Image 6](assets/readme_images/image_6.jpg)
+![Proposal Image 7](assets/readme_images/image_7.jpg)
+
 ---
 
 ## 📱 App Screens
