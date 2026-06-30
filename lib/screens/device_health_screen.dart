@@ -98,16 +98,28 @@ class DeviceHealthScreen extends StatelessWidget {
                 children: [
                   Text('CONNECTIVITY TELEMETRY', style: AppTextStyles.screenLabel),
                   const SizedBox(height: 12),
+<<<<<<< HEAD
                   DataRow(
+=======
+                  InfoRow(
+>>>>>>> main
                     label: 'WiFi RSSI Strength',
                     value: '${device.wifiRssi} dBm · ${device.rssiLabel}',
                   ),
                   const Divider(height: 1),
+<<<<<<< HEAD
                   DataRow(label: 'Gateway Ping Time', value: '${device.pingMs} ms'),
                   const Divider(height: 1),
                   DataRow(label: 'Last Heartbeat', value: '30s ago'),
                   const Divider(height: 1),
                   DataRow(label: 'Continuous Uptime', value: device.uptimeLabel),
+=======
+                  InfoRow(label: 'Gateway Ping Time', value: '${device.pingMs} ms'),
+                  const Divider(height: 1),
+                  InfoRow(label: 'Last Heartbeat', value: '30s ago'),
+                  const Divider(height: 1),
+                  InfoRow(label: 'Continuous Uptime', value: device.uptimeLabel),
+>>>>>>> main
                 ],
               ),
             ),
@@ -142,7 +154,11 @@ class DeviceHealthScreen extends StatelessWidget {
               onPressed: fw != 'idle' ? null : () => state.triggerFirmwareUpdate(),
               style: ElevatedButton.styleFrom(
                 backgroundColor: fw == 'updated' ? const Color(0xFF16A34A) : AppColors.primary,
+<<<<<<< HEAD
                 disabledBackgroundColor: AppColors.primary.withOpacity(0.4),
+=======
+                disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.4),
+>>>>>>> main
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -172,4 +188,8 @@ class DeviceHealthScreen extends StatelessWidget {
       ),
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> main

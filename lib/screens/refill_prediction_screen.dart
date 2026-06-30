@@ -29,13 +29,28 @@ class _RefillPredictionScreenState extends State<RefillPredictionScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('FOOD MANAGEMENT', style: AppTextStyles.screenLabel),
+<<<<<<< HEAD
             const Text('Refill Prediction', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppColors.textDark)),
+=======
+            const Text('Refill Prediction',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w900,
+                    color: AppColors.textDark)),
+>>>>>>> main
           ],
         ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
+<<<<<<< HEAD
             child: StatusBadge(label: 'Active', color: AppColors.online, bgColor: const Color(0xFFDCFCE7)),
+=======
+            child: StatusBadge(
+                label: 'Active',
+                color: AppColors.online,
+                bgColor: const Color(0xFFDCFCE7)),
+>>>>>>> main
           )
         ],
       ),
@@ -47,7 +62,12 @@ class _RefillPredictionScreenState extends State<RefillPredictionScreen> {
             AppCard(
               child: Column(
                 children: [
+<<<<<<< HEAD
                   Text('INTERACTIVE FOOD QUANTITY', style: AppTextStyles.screenLabel),
+=======
+                  Text('INTERACTIVE FOOD QUANTITY',
+                      style: AppTextStyles.screenLabel),
+>>>>>>> main
                   const SizedBox(height: 16),
                   _RingGauge(percent: level / 100),
                   const SizedBox(height: 16),
@@ -71,7 +91,12 @@ class _RefillPredictionScreenState extends State<RefillPredictionScreen> {
 
             // Alert if low
             if (isLow)
+<<<<<<< HEAD
               AlertBanner.warning('⚠ Food level critically low. Refill immediately to prevent missed feedings.'),
+=======
+              AlertBanner.warning(
+                  '⚠ Food level critically low. Refill immediately to prevent missed feedings.'),
+>>>>>>> main
 
             const SizedBox(height: 14),
 
@@ -79,6 +104,7 @@ class _RefillPredictionScreenState extends State<RefillPredictionScreen> {
             AppCard(
               child: Column(
                 children: [
+<<<<<<< HEAD
                   const SectionHeader(label: 'Analytics', title: 'Prediction Summary'),
                   const SizedBox(height: 14),
                   DataRow(label: 'Current hopper level', value: '${level.toStringAsFixed(0)}%'),
@@ -88,6 +114,23 @@ class _RefillPredictionScreenState extends State<RefillPredictionScreen> {
                   DataRow(label: 'Estimated days remaining', value: '$daysLeft days'),
                   const Divider(height: 1),
                   DataRow(
+=======
+                  const SectionHeader(
+                      label: 'Analytics', title: 'Prediction Summary'),
+                  const SizedBox(height: 14),
+                  InfoRow(
+                      label: 'Current hopper level',
+                      value: '${level.toStringAsFixed(0)}%'),
+                  const Divider(height: 1),
+                  InfoRow(
+                      label: 'Daily consumption rate', value: '~5.5% / day'),
+                  const Divider(height: 1),
+                  InfoRow(
+                      label: 'Estimated days remaining',
+                      value: '$daysLeft days'),
+                  const Divider(height: 1),
+                  InfoRow(
+>>>>>>> main
                     label: 'Refill recommended by',
                     value: '',
                     trailing: Text(
@@ -95,14 +138,27 @@ class _RefillPredictionScreenState extends State<RefillPredictionScreen> {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
+<<<<<<< HEAD
                         color: daysLeft <= 3 ? AppColors.offline : AppColors.textDark,
+=======
+                        color: daysLeft <= 3
+                            ? AppColors.offline
+                            : AppColors.textDark,
+>>>>>>> main
                       ),
                     ),
                   ),
                   const Divider(height: 1),
+<<<<<<< HEAD
                   DataRow(label: 'Avg portion per feed', value: '120g'),
                   const Divider(height: 1),
                   DataRow(label: 'Feeds per day', value: '3 (6AM · 12PM · 5PM)'),
+=======
+                  InfoRow(label: 'Avg portion per feed', value: '120g'),
+                  const Divider(height: 1),
+                  InfoRow(
+                      label: 'Feeds per day', value: '3 (6AM · 12PM · 5PM)'),
+>>>>>>> main
                 ],
               ),
             ),
@@ -114,7 +170,12 @@ class _RefillPredictionScreenState extends State<RefillPredictionScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+<<<<<<< HEAD
                   const SectionHeader(label: 'Past 7 days', title: 'Daily Consumption'),
+=======
+                  const SectionHeader(
+                      label: 'Past 7 days', title: 'Daily Consumption'),
+>>>>>>> main
                   const SizedBox(height: 16),
                   _WeeklyChart(currentLevel: level),
                 ],
@@ -131,15 +192,29 @@ class _RefillPredictionScreenState extends State<RefillPredictionScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+<<<<<<< HEAD
                         const Text('Set Low-Stock Reminder', style: AppTextStyles.cardTitle),
                         const SizedBox(height: 2),
                         Text('Notify me when food drops below 20%', style: AppTextStyles.bodySmall.copyWith(fontSize: 11)),
+=======
+                        const Text('Set Low-Stock Reminder',
+                            style: AppTextStyles.cardTitle),
+                        const SizedBox(height: 2),
+                        Text('Notify me when food drops below 20%',
+                            style:
+                                AppTextStyles.bodySmall.copyWith(fontSize: 11)),
+>>>>>>> main
                       ],
                     ),
                   ),
                   Switch.adaptive(
                     value: _reminderSet,
+<<<<<<< HEAD
                     activeColor: AppColors.primary,
+=======
+                    activeTrackColor: AppColors.primary,
+                    activeThumbColor: Colors.white,
+>>>>>>> main
                     onChanged: (v) => setState(() => _reminderSet = v),
                   ),
                 ],
@@ -151,7 +226,13 @@ class _RefillPredictionScreenState extends State<RefillPredictionScreen> {
             ElevatedButton.icon(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
+<<<<<<< HEAD
                   const SnackBar(content: Text('Refill reminder scheduled!'), backgroundColor: AppColors.primary),
+=======
+                  const SnackBar(
+                      content: Text('Refill reminder scheduled!'),
+                      backgroundColor: AppColors.primary),
+>>>>>>> main
                 );
               },
               icon: const Icon(Icons.notification_add_outlined, size: 18),
@@ -167,7 +248,24 @@ class _RefillPredictionScreenState extends State<RefillPredictionScreen> {
 
   String _refillDate(int daysLeft) {
     final date = DateTime.now().add(Duration(days: daysLeft));
+<<<<<<< HEAD
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+=======
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+>>>>>>> main
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
 }
@@ -195,9 +293,17 @@ class _RingGauge extends StatelessWidget {
             children: [
               Text(
                 '${(percent * 100).toStringAsFixed(0)}%',
+<<<<<<< HEAD
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: color),
               ),
               const Text('hopper', style: TextStyle(color: AppColors.textLight, fontSize: 11)),
+=======
+                style: TextStyle(
+                    fontSize: 28, fontWeight: FontWeight.w900, color: color),
+              ),
+              const Text('hopper',
+                  style: TextStyle(color: AppColors.textLight, fontSize: 11)),
+>>>>>>> main
             ],
           ),
         ],
@@ -220,7 +326,13 @@ class _RingPainter extends CustomPainter {
     // Background ring
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
+<<<<<<< HEAD
       -pi / 2, 2 * pi, false,
+=======
+      -pi / 2,
+      2 * pi,
+      false,
+>>>>>>> main
       Paint()
         ..color = const Color(0xFFE2E8F0)
         ..strokeWidth = strokeWidth
@@ -231,7 +343,13 @@ class _RingPainter extends CustomPainter {
     // Progress ring
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
+<<<<<<< HEAD
       -pi / 2, 2 * pi * percent, false,
+=======
+      -pi / 2,
+      2 * pi * percent,
+      false,
+>>>>>>> main
       Paint()
         ..color = color
         ..strokeWidth = strokeWidth

@@ -1,8 +1,16 @@
 // ============================================================
 // Smart Fish Feeder — Data Models
+<<<<<<< HEAD
 // builtbyokuja · Uganda Tilapia Aquaculture Platform
 // ============================================================
 
+=======
+// Uganda Tilapia Aquaculture Platform
+// ============================================================
+
+import 'package:flutter/material.dart';
+
+>>>>>>> main
 class PondModel {
   final int id;
   final String name;
@@ -65,7 +73,10 @@ class FeedSchedule {
   });
 
   String get timeLabel {
+<<<<<<< HEAD
     final h = time.hour.toString().padLeft(2, '0');
+=======
+>>>>>>> main
     final m = time.minute.toString().padLeft(2, '0');
     final period = time.period == DayPeriod.am ? 'AM' : 'PM';
     final h12 = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;

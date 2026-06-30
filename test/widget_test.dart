@@ -1,6 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
+<<<<<<< HEAD
 import 'package:flutter/material.dart';
+=======
+>>>>>>> main
 import 'package:smart_fish_feeder/main.dart';
 import 'package:smart_fish_feeder/services/app_state.dart';
 

@@ -21,9 +21,15 @@ class OnboardingScreen extends StatelessWidget {
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
+<<<<<<< HEAD
                     color: Colors.white.withOpacity(0.08),
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(color: Colors.white.withOpacity(0.14)),
+=======
+                    color: Colors.white.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(color: Colors.white.withValues(alpha: 0.14)),
+>>>>>>> main
                   ),
                   child: const Center(
                     child: Icon(Icons.set_meal_rounded, color: AppColors.accent, size: 32),
@@ -126,7 +132,11 @@ class OnboardingScreen extends StatelessWidget {
 
   Widget _glow(double size) => Container(
         width: size, height: size,
+<<<<<<< HEAD
         decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.accent.withOpacity(0.06)),
+=======
+        decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.accent.withValues(alpha: 0.06)),
+>>>>>>> main
       );
 }
 
@@ -141,16 +151,26 @@ class _FeatureTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
+<<<<<<< HEAD
         color: Colors.white.withOpacity(0.05),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: Colors.white.withOpacity(0.1)),
+=======
+        color: Colors.white.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+>>>>>>> main
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: const EdgeInsets.all(8),
+<<<<<<< HEAD
             decoration: BoxDecoration(color: Colors.white.withOpacity(0.08), borderRadius: BorderRadius.circular(10)),
+=======
+            decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(10)),
+>>>>>>> main
             child: Icon(icon, color: Colors.white, size: 18),
           ),
           const SizedBox(width: 14),

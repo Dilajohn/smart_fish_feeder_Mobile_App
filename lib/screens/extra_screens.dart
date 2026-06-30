@@ -23,7 +23,15 @@ class CooldownLockScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('SAFETY SYSTEM', style: AppTextStyles.screenLabel),
+<<<<<<< HEAD
             const Text('Cooldown Lock', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppColors.textDark)),
+=======
+            const Text('Cooldown Lock',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w900,
+                    color: AppColors.textDark)),
+>>>>>>> main
           ],
         ),
         actions: [
@@ -31,7 +39,11 @@ class CooldownLockScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 16),
             child: locked
                 ? StatusBadge.warning('Locked')
+<<<<<<< HEAD
                 : StatusBadge.success(),
+=======
+                : StatusBadge.success('Unlocked'),
+>>>>>>> main
           ),
         ],
       ),
@@ -45,9 +57,18 @@ class CooldownLockScreen extends StatelessWidget {
                 children: [
                   const SizedBox(height: 8),
                   Container(
+<<<<<<< HEAD
                     width: 80, height: 80,
                     decoration: BoxDecoration(
                       color: locked ? const Color(0xFFFEF9C3) : const Color(0xFFF0FDF4),
+=======
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: locked
+                          ? const Color(0xFFFEF9C3)
+                          : const Color(0xFFF0FDF4),
+>>>>>>> main
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
@@ -73,17 +94,39 @@ class CooldownLockScreen extends StatelessWidget {
                           ? 'A cooldown period prevents back-to-back manual feeds that could overload fish and pollute pond water quality.'
                           : 'Manual feeds are unlocked. You can now trigger a manual feed from the dashboard.',
                       textAlign: TextAlign.center,
+<<<<<<< HEAD
                       style: const TextStyle(color: AppColors.textMedium, fontSize: 12, height: 1.6),
+=======
+                      style: const TextStyle(
+                          color: AppColors.textMedium,
+                          fontSize: 12,
+                          height: 1.6),
+>>>>>>> main
                     ),
                   ),
                   if (locked) ...[
                     const SizedBox(height: 16),
                     Container(
+<<<<<<< HEAD
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       decoration: BoxDecoration(color: const Color(0xFFFEF9C3), borderRadius: BorderRadius.circular(12)),
                       child: Text(
                         '$mins min remaining',
                         style: const TextStyle(color: AppColors.warning, fontSize: 20, fontWeight: FontWeight.w900, fontFamily: 'monospace'),
+=======
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      decoration: BoxDecoration(
+                          color: const Color(0xFFFEF9C3),
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Text(
+                        '$mins min remaining',
+                        style: const TextStyle(
+                            color: AppColors.warning,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w900,
+                            fontFamily: 'monospace'),
+>>>>>>> main
                       ),
                     ),
                   ],
@@ -100,6 +143,7 @@ class CooldownLockScreen extends StatelessWidget {
                 children: [
                   Text('COOLDOWN PARAMETERS', style: AppTextStyles.screenLabel),
                   const SizedBox(height: 12),
+<<<<<<< HEAD
                   DataRow(label: 'Cooldown Duration', value: '30 minutes'),
                   const Divider(height: 1),
                   DataRow(label: 'Trigger Reason', value: 'Manual override at 10:38 AM'),
@@ -107,6 +151,18 @@ class CooldownLockScreen extends StatelessWidget {
                   DataRow(label: 'Total Overrides Today', value: '1 of 3 allowed'),
                   const Divider(height: 1),
                   DataRow(label: 'Pollution Prevention', value: 'Active'),
+=======
+                  InfoRow(label: 'Cooldown Duration', value: '30 minutes'),
+                  const Divider(height: 1),
+                  InfoRow(
+                      label: 'Trigger Reason',
+                      value: 'Manual override at 10:38 AM'),
+                  const Divider(height: 1),
+                  InfoRow(
+                      label: 'Total Overrides Today', value: '1 of 3 allowed'),
+                  const Divider(height: 1),
+                  InfoRow(label: 'Pollution Prevention', value: 'Active'),
+>>>>>>> main
                 ],
               ),
             ),
@@ -128,7 +184,12 @@ class CooldownLockScreen extends StatelessWidget {
                   Expanded(
                     child: Text(
                       'Tilapia overfeeding raises ammonia levels and depletes oxygen. The cooldown prevents water quality degradation between manual feeds.',
+<<<<<<< HEAD
                       style: TextStyle(color: AppColors.info, fontSize: 12, height: 1.5),
+=======
+                      style: TextStyle(
+                          color: AppColors.info, fontSize: 12, height: 1.5),
+>>>>>>> main
                     ),
                   ),
                 ],
@@ -144,15 +205,29 @@ class CooldownLockScreen extends StatelessWidget {
                     context: context,
                     builder: (_) => AlertDialog(
                       title: const Text('Override Cooldown?'),
+<<<<<<< HEAD
                       content: const Text('This may affect water quality. Only override in an emergency.'),
                       actions: [
                         TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+=======
+                      content: const Text(
+                          'This may affect water quality. Only override in an emergency.'),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Cancel')),
+>>>>>>> main
                         ElevatedButton(
                           onPressed: () {
                             state.overrideCooldown();
                             Navigator.pop(context);
                           },
+<<<<<<< HEAD
                           style: ElevatedButton.styleFrom(backgroundColor: AppColors.offline),
+=======
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.offline),
+>>>>>>> main
                           child: const Text('Override Anyway'),
                         ),
                       ],
@@ -163,9 +238,17 @@ class CooldownLockScreen extends StatelessWidget {
                   foregroundColor: AppColors.offline,
                   side: const BorderSide(color: AppColors.offline),
                   minimumSize: const Size(double.infinity, 48),
+<<<<<<< HEAD
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                 ),
                 child: const Text('Emergency Override Cooldown', style: TextStyle(fontWeight: FontWeight.w700)),
+=======
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14)),
+                ),
+                child: const Text('Emergency Override Cooldown',
+                    style: TextStyle(fontWeight: FontWeight.w700)),
+>>>>>>> main
               ),
 
             const SizedBox(height: 24),
@@ -201,7 +284,15 @@ class _SyncStatusScreenState extends State<SyncStatusScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('EEPROM & CLOUD', style: AppTextStyles.screenLabel),
+<<<<<<< HEAD
             const Text('Data Sync Status', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppColors.textDark)),
+=======
+            const Text('Data Sync Status',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w900,
+                    color: AppColors.textDark)),
+>>>>>>> main
           ],
         ),
       ),
@@ -210,16 +301,23 @@ class _SyncStatusScreenState extends State<SyncStatusScreen> {
         child: Column(
           children: [
             if (sync.pendingUploads > 0)
+<<<<<<< HEAD
               AlertBanner.warning('${sync.pendingUploads} feed events pending upload to server.'),
 
             const SizedBox(height: 14),
 
+=======
+              AlertBanner.warning(
+                  '${sync.pendingUploads} feed events pending upload to server.'),
+            const SizedBox(height: 14),
+>>>>>>> main
             AppCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('SYNC COUNTERS', style: AppTextStyles.screenLabel),
                   const SizedBox(height: 12),
+<<<<<<< HEAD
                   DataRow(label: 'Pending Uploads', value: '${sync.pendingUploads} events'),
                   const Divider(height: 1),
                   DataRow(label: 'Failed Retries', value: '${sync.failedRetries} queued'),
@@ -233,6 +331,26 @@ class _SyncStatusScreenState extends State<SyncStatusScreen> {
 
             const SizedBox(height: 14),
 
+=======
+                  InfoRow(
+                      label: 'Pending Uploads',
+                      value: '${sync.pendingUploads} events'),
+                  const Divider(height: 1),
+                  InfoRow(
+                      label: 'Failed Retries',
+                      value: '${sync.failedRetries} queued'),
+                  const Divider(height: 1),
+                  InfoRow(
+                      label: 'Recovered Events',
+                      value: '${sync.recoveredEvents} uploaded'),
+                  const Divider(height: 1),
+                  InfoRow(
+                      label: 'Last Sync', value: _timeAgo(sync.lastSyncTime)),
+                ],
+              ),
+            ),
+            const SizedBox(height: 14),
+>>>>>>> main
             AppCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -242,8 +360,19 @@ class _SyncStatusScreenState extends State<SyncStatusScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+<<<<<<< HEAD
                       Text('${sync.eepromUsedBytes} / ${sync.eepromTotalBytes} bytes', style: AppTextStyles.bodySmall),
                       Text('$fillPct% used', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.primary)),
+=======
+                      Text(
+                          '${sync.eepromUsedBytes} / ${sync.eepromTotalBytes} bytes',
+                          style: AppTextStyles.bodySmall),
+                      Text('$fillPct% used',
+                          style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.primary)),
+>>>>>>> main
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -252,23 +381,42 @@ class _SyncStatusScreenState extends State<SyncStatusScreen> {
                     child: LinearProgressIndicator(
                       value: sync.eepromFillPercent,
                       backgroundColor: const Color(0xFFE2E8F0),
+<<<<<<< HEAD
                       valueColor: const AlwaysStoppedAnimation(AppColors.primary),
+=======
+                      valueColor:
+                          const AlwaysStoppedAnimation(AppColors.primary),
+>>>>>>> main
                       minHeight: 8,
                     ),
                   ),
                   const SizedBox(height: 12),
+<<<<<<< HEAD
                   DataRow(
+=======
+                  InfoRow(
+>>>>>>> main
                     label: 'EEPROM Health',
                     value: '',
                     trailing: StatusBadge(
                       label: sync.eepromHealthy ? 'Healthy' : 'Warning',
+<<<<<<< HEAD
                       color: sync.eepromHealthy ? AppColors.online : AppColors.offline,
                       bgColor: sync.eepromHealthy ? const Color(0xFFDCFCE7) : const Color(0xFFFEE2E2),
+=======
+                      color: sync.eepromHealthy
+                          ? AppColors.online
+                          : AppColors.offline,
+                      bgColor: sync.eepromHealthy
+                          ? const Color(0xFFDCFCE7)
+                          : const Color(0xFFFEE2E2),
+>>>>>>> main
                     ),
                   ),
                 ],
               ),
             ),
+<<<<<<< HEAD
 
             const SizedBox(height: 20),
 
@@ -289,6 +437,34 @@ class _SyncStatusScreenState extends State<SyncStatusScreen> {
               label: Text(_syncing ? 'Syncing...' : 'Force Hardware Re-sync'),
             ),
 
+=======
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: _syncing
+                  ? null
+                  : () async {
+                      setState(() => _syncing = true);
+                      await Future.delayed(const Duration(seconds: 2));
+                      if (mounted) {
+                        setState(() => _syncing = false);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content:
+                                  Text('Device states have been hard synced.'),
+                              backgroundColor: AppColors.primary),
+                        );
+                      }
+                    },
+              icon: _syncing
+                  ? const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2, color: Colors.white))
+                  : const Icon(Icons.sync, size: 18),
+              label: Text(_syncing ? 'Syncing...' : 'Force Hardware Re-sync'),
+            ),
+>>>>>>> main
             const SizedBox(height: 24),
           ],
         ),
@@ -334,7 +510,15 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('DATA EXPORT PANEL', style: AppTextStyles.screenLabel),
+<<<<<<< HEAD
             const Text('Export Feed Log', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppColors.textDark)),
+=======
+            const Text('Export Feed Log',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w900,
+                    color: AppColors.textDark)),
+>>>>>>> main
           ],
         ),
       ),
@@ -351,9 +535,18 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
                   const SizedBox(height: 8),
                   Row(
                     children: [
+<<<<<<< HEAD
                       Expanded(child: _DateBox(label: 'From', value: 'Jun 01, 2026')),
                       const SizedBox(width: 12),
                       Expanded(child: _DateBox(label: 'To', value: 'Jun 18, 2026')),
+=======
+                      Expanded(
+                          child:
+                              _DateBox(label: 'From', value: 'Jun 01, 2026')),
+                      const SizedBox(width: 12),
+                      Expanded(
+                          child: _DateBox(label: 'To', value: 'Jun 18, 2026')),
+>>>>>>> main
                     ],
                   ),
 
@@ -364,6 +557,7 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
                   AppCard(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Column(
+<<<<<<< HEAD
                       children: _segments.entries.map((e) => SwitchListTile.adaptive(
                             dense: true,
                             contentPadding: const EdgeInsets.symmetric(horizontal: 14),
@@ -372,6 +566,24 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
                             activeColor: AppColors.primary,
                             onChanged: (v) => setState(() => _segments[e.key] = v),
                           )).toList(),
+=======
+                      children: _segments.entries
+                          .map((e) => SwitchListTile.adaptive(
+                                dense: true,
+                                contentPadding:
+                                    const EdgeInsets.symmetric(horizontal: 14),
+                                title: Text(e.key,
+                                    style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600)),
+                                value: e.value,
+                                activeTrackColor: AppColors.primary,
+                                activeThumbColor: Colors.white,
+                                onChanged: (v) =>
+                                    setState(() => _segments[e.key] = v),
+                              ))
+                          .toList(),
+>>>>>>> main
                     ),
                   ),
 
@@ -389,9 +601,21 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
                             margin: const EdgeInsets.symmetric(horizontal: 4),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
+<<<<<<< HEAD
                               color: selected ? const Color(0xFFF0FDF4) : Colors.white,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(color: selected ? AppColors.primary : const Color(0xFFE2E8F0), width: selected ? 2 : 1),
+=======
+                              color: selected
+                                  ? const Color(0xFFF0FDF4)
+                                  : Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                  color: selected
+                                      ? AppColors.primary
+                                      : const Color(0xFFE2E8F0),
+                                  width: selected ? 2 : 1),
+>>>>>>> main
                             ),
                             child: Text(
                               f,
@@ -399,7 +623,13 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
+<<<<<<< HEAD
                                 color: selected ? AppColors.primary : AppColors.textMedium,
+=======
+                                color: selected
+                                    ? AppColors.primary
+                                    : AppColors.textMedium,
+>>>>>>> main
                               ),
                             ),
                           ),
@@ -410,18 +640,27 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
 
                   const SizedBox(height: 14),
 
+<<<<<<< HEAD
                   AlertBanner.info('Export includes 18 days · 378 logs · ~42 KB size threshold'),
+=======
+                  AlertBanner.info(
+                      'Export includes 18 days · 378 logs · ~42 KB size threshold'),
+>>>>>>> main
 
                   const SizedBox(height: 8),
                 ],
               ),
             ),
           ),
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
           Container(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
             color: Colors.white,
             child: ElevatedButton.icon(
+<<<<<<< HEAD
               onPressed: _busy ? null : () async {
                 setState(() => _busy = true);
                 await Future.delayed(const Duration(seconds: 2));
@@ -436,6 +675,33 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
                   ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
                   : const Icon(Icons.download_outlined, size: 18),
               label: Text(_busy ? 'Compiling export sheets...' : 'Compile & Export Log as $_format'),
+=======
+              onPressed: _busy
+                  ? null
+                  : () async {
+                      setState(() => _busy = true);
+                      await Future.delayed(const Duration(seconds: 2));
+                      if (mounted) {
+                        setState(() => _busy = false);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text(
+                                  'Report compiled as $_format! Check your files folder.'),
+                              backgroundColor: AppColors.primary),
+                        );
+                      }
+                    },
+              icon: _busy
+                  ? const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2, color: Colors.white))
+                  : const Icon(Icons.download_outlined, size: 18),
+              label: Text(_busy
+                  ? 'Compiling export sheets...'
+                  : 'Compile & Export Log as $_format'),
+>>>>>>> main
             ),
           ),
         ],
@@ -461,9 +727,20 @@ class _DateBox extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+<<<<<<< HEAD
           Text(label.toUpperCase(), style: AppTextStyles.screenLabel.copyWith(fontSize: 9)),
           const SizedBox(height: 4),
           Text(value, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.textDark)),
+=======
+          Text(label.toUpperCase(),
+              style: AppTextStyles.screenLabel.copyWith(fontSize: 9)),
+          const SizedBox(height: 4),
+          Text(value,
+              style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textDark)),
+>>>>>>> main
         ],
       ),
     );
@@ -477,6 +754,7 @@ class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
 
   static const _screens = [
+<<<<<<< HEAD
     _ScreenEntry('splash', '⚡ 1. Boot & Splash', 'Hardware boot & synchronization loader sequence', 'General'),
     _ScreenEntry('onboarding', '👋 2. Onboarding Welcome', 'Platform welcome screen & initial intro slides', 'General'),
     _ScreenEntry('/qr-pair', '📷 3. QR Pairing Device', 'Match physical node QR stickers to ponds', 'Provisioning'),
@@ -490,6 +768,77 @@ class MenuScreen extends StatelessWidget {
   ];
 
   static const _categories = ['General', 'Provisioning', 'Schedules & Control', 'Diagnostics', 'Analytics'];
+=======
+    _ScreenEntry('splash', '⚡ 1. Boot & Splash',
+        'Hardware boot & synchronization loader sequence', 'General'),
+    _ScreenEntry('/login', '🔐 2. Login',
+        'Farmer sign-in with email & password', 'General'),
+    _ScreenEntry('onboarding', '👋 3. Onboarding Welcome',
+        'Platform welcome screen & initial intro slides', 'General'),
+    _ScreenEntry(
+        'dashboard',
+        '📱 4. Feeder Main Dashboard',
+        'Active schedules, live feed triggers, and telemetry logs',
+        'Schedules & Control'),
+    _ScreenEntry(
+        'ponds',
+        '🐟 5. Multi-Pond Live Space',
+        'Overview scorecards of all active feed ponds in Uganda',
+        'Schedules & Control'),
+    _ScreenEntry(
+        '/add-schedule',
+        '➕ 6. Add Schedule',
+        'Create new feed schedule with time, days, and portion',
+        'Schedules & Control'),
+    _ScreenEntry(
+        'refill',
+        '⚖️ 7. Refill Prediction',
+        'Predictive analytics for hopper feed capacity level gauge',
+        'Analytics'),
+    _ScreenEntry('/analytics', '📊 8. Feeding Analytics',
+        'Weekly feed summary with bar chart and insights', 'Analytics'),
+    _ScreenEntry(
+        'device',
+        '🏥 9. Hardware Diagnostics',
+        'WiFi RSSI strength, ping rates, servo & RTC DS3231 states',
+        'Diagnostics'),
+    _ScreenEntry(
+        '/cooldown',
+        '🔒 10. Cooldown Safety Lock',
+        'Prevents water quality pollution from frequent overrides',
+        'Diagnostics'),
+    _ScreenEntry('/offline', '📡 11. Offline Mode',
+        'RTC fallback active, buffered events, last sync info', 'Diagnostics'),
+    _ScreenEntry('/water-alert', '💧 12. Water Quality Alert',
+        'pH/temperature/DO alerts with auto-actions', 'Diagnostics'),
+    _ScreenEntry('/notifications', '🔔 13. Notifications',
+        'Today & yesterday alert timeline', 'General'),
+    _ScreenEntry('/profile', '👤 14. Profile',
+        'Account, my farms, system info, sign out', 'General'),
+    _ScreenEntry('/qr-pair', '📷 15. QR Pairing Device',
+        'Match physical node QR stickers to ponds', 'Provisioning'),
+    _ScreenEntry('/calibration', '🎚 16. Calibration Wizard',
+        'Map portion labels to servo angles (45°/90°/135°)', 'Provisioning'),
+    _ScreenEntry(
+        '/sync',
+        '🔄 17. Data Sync Status',
+        'Real-time EEPROM memory registers & server transaction handshakes',
+        'Provisioning'),
+    _ScreenEntry(
+        '/export-log',
+        '📄 18. Feed Log CSV Export',
+        'Compile & download high-fidelity feeding history summaries',
+        'Analytics'),
+  ];
+
+  static const _categories = [
+    'General',
+    'Provisioning',
+    'Schedules & Control',
+    'Diagnostics',
+    'Analytics'
+  ];
+>>>>>>> main
 
   @override
   Widget build(BuildContext context) {
@@ -500,8 +849,19 @@ class MenuScreen extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+<<<<<<< HEAD
             Text('UGANDAN AGRI-FEEDER NODE', style: AppTextStyles.screenLabel.copyWith(color: AppColors.accent)),
             const Text('Screens Directory', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Colors.white)),
+=======
+            Text('UGANDAN AGRI-FEEDER NODE',
+                style: AppTextStyles.screenLabel
+                    .copyWith(color: AppColors.accent)),
+            const Text('Screens Directory',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white)),
+>>>>>>> main
           ],
         ),
         actions: [
@@ -510,11 +870,24 @@ class MenuScreen extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
+<<<<<<< HEAD
                 color: AppColors.accent.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: AppColors.accent.withOpacity(0.3)),
               ),
               child: Text('10 Screens', style: TextStyle(color: AppColors.accent, fontSize: 11, fontWeight: FontWeight.w700)),
+=======
+                color: AppColors.accent.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(20),
+                border:
+                    Border.all(color: AppColors.accent.withValues(alpha: 0.3)),
+              ),
+              child: Text('18 Screens',
+                  style: TextStyle(
+                      color: AppColors.accent,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700)),
+>>>>>>> main
             ),
           ),
         ],
@@ -525,6 +898,7 @@ class MenuScreen extends StatelessWidget {
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
+<<<<<<< HEAD
               color: Colors.white.withOpacity(0.05),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Colors.white.withOpacity(0.1)),
@@ -535,18 +909,44 @@ class MenuScreen extends StatelessWidget {
             ),
           ),
 
+=======
+              color: Colors.white.withValues(alpha: 0.05),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+            ),
+            child: const Text(
+              '✨ Seamless navigation active: select any screen below to navigate to it.',
+              style:
+                  TextStyle(color: Colors.white60, fontSize: 12, height: 1.5),
+            ),
+          ),
+>>>>>>> main
           Expanded(
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               children: _categories.map((cat) {
+<<<<<<< HEAD
                 final entries = _screens.where((s) => s.category == cat).toList();
+=======
+                final entries =
+                    _screens.where((s) => s.category == cat).toList();
+>>>>>>> main
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8, top: 16),
                       child: Text('// ${cat.toUpperCase()}',
+<<<<<<< HEAD
                           style: const TextStyle(color: AppColors.accent, fontSize: 11, fontWeight: FontWeight.w800, fontFamily: 'monospace', letterSpacing: 0.5)),
+=======
+                          style: const TextStyle(
+                              color: AppColors.accent,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                              fontFamily: 'monospace',
+                              letterSpacing: 0.5)),
+>>>>>>> main
                     ),
                     ...entries.map((e) => _ScreenTile(entry: e)),
                   ],
@@ -588,9 +988,15 @@ class _ScreenTile extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
+<<<<<<< HEAD
           color: Colors.white.withOpacity(0.05),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.white.withOpacity(0.08)),
+=======
+          color: Colors.white.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+>>>>>>> main
         ),
         child: Row(
           children: [
@@ -598,6 +1004,7 @@ class _ScreenTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+<<<<<<< HEAD
                   Text(entry.name, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w700)),
                   const SizedBox(height: 3),
                   Text(entry.desc, style: const TextStyle(color: Colors.white38, fontSize: 11, height: 1.4), maxLines: 2, overflow: TextOverflow.ellipsis),
@@ -605,6 +1012,24 @@ class _ScreenTile extends StatelessWidget {
               ),
             ),
             const Icon(Icons.arrow_forward_ios, color: Colors.white30, size: 14),
+=======
+                  Text(entry.name,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700)),
+                  const SizedBox(height: 3),
+                  Text(entry.desc,
+                      style: const TextStyle(
+                          color: Colors.white38, fontSize: 11, height: 1.4),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis),
+                ],
+              ),
+            ),
+            const Icon(Icons.arrow_forward_ios,
+                color: Colors.white30, size: 14),
+>>>>>>> main
           ],
         ),
       ),
