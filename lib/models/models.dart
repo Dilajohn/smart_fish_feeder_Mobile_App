@@ -1,7 +1,6 @@
 // ============================================================
 // Smart Fish Feeder — Data Models
 <<<<<<< HEAD
-// builtbyokuja · Uganda Tilapia Aquaculture Platform
 // ============================================================
 
 =======

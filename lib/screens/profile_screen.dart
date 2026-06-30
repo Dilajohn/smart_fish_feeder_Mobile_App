@@ -16,9 +16,16 @@ class ProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
             Text('ACCOUNT',
-                style: TextStyle(color: AppColors.textLight, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.2)),
+                style: TextStyle(
+                    color: AppColors.textLight,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.2)),
             Text('My profile',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppColors.textDark)),
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w900,
+                    color: AppColors.textDark)),
           ],
         ),
       ),
@@ -56,11 +63,15 @@ class ProfileScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
-                      Text('Okuja',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppColors.textDark)),
+                      Text('GROUP21',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.textDark)),
                       SizedBox(height: 2),
                       Text('farmer@pondA.ug',
-                          style: TextStyle(fontSize: 12, color: AppColors.textMedium)),
+                          style: TextStyle(
+                              fontSize: 12, color: AppColors.textMedium)),
                       SizedBox(height: 6),
                       StatusBadge(
                         label: 'Farm operator',
@@ -83,9 +94,15 @@ class ProfileScreen extends StatelessWidget {
             padding: EdgeInsets.zero,
             child: Column(
               children: const [
-                _FarmRow(name: 'Pond A · Feeder #001', status: 'Online', color: AppColors.online),
+                _FarmRow(
+                    name: 'Pond A · Feeder #001',
+                    status: 'Online',
+                    color: AppColors.online),
                 Divider(height: 1),
-                _FarmRow(name: 'Pond B · Feeder #002', status: 'Offline', color: AppColors.offline),
+                _FarmRow(
+                    name: 'Pond B · Feeder #002',
+                    status: 'Offline',
+                    color: AppColors.offline),
               ],
             ),
           ),
@@ -99,11 +116,21 @@ class ProfileScreen extends StatelessWidget {
             padding: EdgeInsets.zero,
             child: Column(
               children: [
-                _NavRow(icon: Icons.notifications_outlined, label: 'Notifications', trailingStatus: 'On', color: AppColors.online),
+                _NavRow(
+                    icon: Icons.notifications_outlined,
+                    label: 'Notifications',
+                    trailingStatus: 'On',
+                    color: AppColors.online),
                 const Divider(height: 1),
-                const _NavRow(icon: Icons.lock_outline, label: 'Change password', chevron: true),
+                const _NavRow(
+                    icon: Icons.lock_outline,
+                    label: 'Change password',
+                    chevron: true),
                 const Divider(height: 1),
-                const _NavRow(icon: Icons.person_add_outlined, label: 'Invite team member', chevron: true),
+                const _NavRow(
+                    icon: Icons.person_add_outlined,
+                    label: 'Invite team member',
+                    chevron: true),
               ],
             ),
           ),
@@ -117,11 +144,20 @@ class ProfileScreen extends StatelessWidget {
             padding: EdgeInsets.zero,
             child: Column(
               children: const [
-                _SystemRow(label: 'Backend', value: 'Render · online', color: AppColors.online),
+                _SystemRow(
+                    label: 'Backend',
+                    value: 'Render · online',
+                    color: AppColors.online),
                 Divider(height: 1),
-                _SystemRow(label: 'Database', value: 'Neon PostgreSQL', color: AppColors.textMedium),
+                _SystemRow(
+                    label: 'Database',
+                    value: 'Neon PostgreSQL',
+                    color: AppColors.textMedium),
                 Divider(height: 1),
-                _SystemRow(label: 'App version', value: 'v1.0.0', color: AppColors.textMedium),
+                _SystemRow(
+                    label: 'App version',
+                    value: 'v1.0.0',
+                    color: AppColors.textMedium),
               ],
             ),
           ),
@@ -135,15 +171,20 @@ class ProfileScreen extends StatelessWidget {
                 context: context,
                 builder: (_) => AlertDialog(
                   title: const Text('Sign out?'),
-                  content: const Text('You will need to log in again to control your feeders.'),
+                  content: const Text(
+                      'You will need to log in again to control your feeders.'),
                   actions: [
-                    TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+                    TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Cancel')),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
-                        Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/login', (_) => false);
                       },
-                      style: ElevatedButton.styleFrom(backgroundColor: AppColors.offline),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.offline),
                       child: const Text('Sign out'),
                     ),
                   ],
@@ -156,7 +197,8 @@ class ProfileScreen extends StatelessWidget {
               minimumSize: const Size(double.infinity, 50),
               foregroundColor: AppColors.offline,
               side: const BorderSide(color: AppColors.offline, width: 1.5),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14)),
             ),
           ),
 
@@ -171,14 +213,21 @@ class StatusBadge extends StatelessWidget {
   final String label;
   final Color color;
   final Color bgColor;
-  const StatusBadge({super.key, required this.label, required this.color, required this.bgColor});
+  const StatusBadge(
+      {super.key,
+      required this.label,
+      required this.color,
+      required this.bgColor});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(8)),
-      child: Text(label, style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.w800)),
+      decoration:
+          BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(8)),
+      child: Text(label,
+          style: TextStyle(
+              color: color, fontSize: 10, fontWeight: FontWeight.w800)),
     );
   }
 }
@@ -187,7 +236,8 @@ class _FarmRow extends StatelessWidget {
   final String name;
   final String status;
   final Color color;
-  const _FarmRow({required this.name, required this.status, required this.color});
+  const _FarmRow(
+      {required this.name, required this.status, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -197,8 +247,14 @@ class _FarmRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(name,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textDark)),
-          StatusBadge(label: status, color: color, bgColor: color.withValues(alpha: 0.1)),
+              style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textDark)),
+          StatusBadge(
+              label: status,
+              color: color,
+              bgColor: color.withValues(alpha: 0.1)),
         ],
       ),
     );
@@ -230,12 +286,19 @@ class _NavRow extends StatelessWidget {
           const SizedBox(width: 10),
           Expanded(
             child: Text(label,
-                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textDark)),
+                style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textDark)),
           ),
           if (trailingStatus != null)
-            StatusBadge(label: trailingStatus!, color: color ?? AppColors.online, bgColor: const Color(0xFFDCFCE7))
+            StatusBadge(
+                label: trailingStatus!,
+                color: color ?? AppColors.online,
+                bgColor: const Color(0xFFDCFCE7))
           else if (chevron)
-            const Icon(Icons.chevron_right, size: 18, color: AppColors.textLight),
+            const Icon(Icons.chevron_right,
+                size: 18, color: AppColors.textLight),
         ],
       ),
     );
@@ -246,7 +309,8 @@ class _SystemRow extends StatelessWidget {
   final String label;
   final String value;
   final Color color;
-  const _SystemRow({required this.label, required this.value, required this.color});
+  const _SystemRow(
+      {required this.label, required this.value, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -255,8 +319,14 @@ class _SystemRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textDark)),
-          Text(value, style: TextStyle(fontSize: 11, color: color, fontWeight: FontWeight.w700)),
+          Text(label,
+              style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textDark)),
+          Text(value,
+              style: TextStyle(
+                  fontSize: 11, color: color, fontWeight: FontWeight.w700)),
         ],
       ),
     );

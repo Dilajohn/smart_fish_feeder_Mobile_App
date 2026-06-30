@@ -118,7 +118,7 @@ class OnboardingScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      const Text('builtbyokuja · v1.0.0', style: TextStyle(color: Colors.white24, fontSize: 10, fontFamily: 'monospace')),
+                      const Text('GROUP21 · v1.0.0', style: TextStyle(color: Colors.white24, fontSize: 10, fontFamily: 'monospace')),
                     ],
                   ),
                 ),

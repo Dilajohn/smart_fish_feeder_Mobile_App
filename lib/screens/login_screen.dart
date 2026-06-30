@@ -53,7 +53,8 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               // Header card — fish logo on dark green
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
                 decoration: BoxDecoration(
                   color: AppColors.primary,
                   borderRadius: BorderRadius.circular(20),
@@ -106,7 +107,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
                   hintText: 'farmer@pondA.ug',
-                  prefixIcon: Icon(Icons.alternate_email, color: AppColors.textLight),
+                  prefixIcon:
+                      Icon(Icons.alternate_email, color: AppColors.textLight),
                 ),
               ),
 
@@ -120,10 +122,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 obscureText: _obscure,
                 decoration: InputDecoration(
                   hintText: '••••••••',
-                  prefixIcon: const Icon(Icons.lock_outline, color: AppColors.textLight),
+                  prefixIcon: const Icon(Icons.lock_outline,
+                      color: AppColors.textLight),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                      _obscure
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
                       color: AppColors.textLight,
                     ),
                     onPressed: () => setState(() => _obscure = !_obscure),
@@ -168,7 +173,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 child: const Text(
                   'Forgot password?',
-                  style: TextStyle(color: AppColors.textMedium, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      color: AppColors.textMedium, fontWeight: FontWeight.w600),
                 ),
               ),
 
@@ -177,15 +183,20 @@ class _LoginScreenState extends State<LoginScreen> {
               // OR divider
               Row(
                 children: [
-                  Expanded(child: Container(height: 1, color: const Color(0xFFE2E8F0))),
+                  Expanded(
+                      child:
+                          Container(height: 1, color: const Color(0xFFE2E8F0))),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12),
                     child: Text(
                       '— or —',
-                      style: TextStyle(color: AppColors.textLight, fontSize: 12),
+                      style:
+                          TextStyle(color: AppColors.textLight, fontSize: 12),
                     ),
                   ),
-                  Expanded(child: Container(height: 1, color: const Color(0xFFE2E8F0))),
+                  Expanded(
+                      child:
+                          Container(height: 1, color: const Color(0xFFE2E8F0))),
                 ],
               ),
 
@@ -219,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const Center(
                 child: Text(
-                  'builtbyokuja · v1.0.0',
+                  'GROUP21 · v1.0.0',
                   style: TextStyle(
                     color: Colors.white38,
                     fontSize: 10,

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace "com.builtbyokuja.smart_fish_feeder"
+    namespace "com.group21.smart_fish_feeder"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -23,7 +23,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.builtbyokuja.smart_fish_feeder"
+        applicationId "com.group21.smart_fish_feeder"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
