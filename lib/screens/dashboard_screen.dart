@@ -11,7 +11,8 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<AppState>();
-    final todaySchedules = state.schedules.where((s) => s.pondName == 'Pond A').toList();
+    final todaySchedules =
+        state.schedules.where((s) => s.pondName == 'Pond A').toList();
 
     return Scaffold(
       backgroundColor: AppColors.cardBg,
@@ -33,23 +34,31 @@ class DashboardScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text('FEEDER #001 · POND A', style: AppTextStyles.screenLabel),
+                        Text('FEEDER #001 · POND A',
+                            style: AppTextStyles.screenLabel),
                         const SizedBox(height: 2),
-                        const Text('Feeder Dashboard', style: AppTextStyles.screenTitle),
+                        const Text('Feeder Dashboard',
+                            style: AppTextStyles.screenTitle),
                       ],
                     ),
                     const Spacer(),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
                         color: const Color(0xFFF0FDF4),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: const Row(
                         children: [
-                          CircleAvatar(radius: 4, backgroundColor: AppColors.online),
+                          CircleAvatar(
+                              radius: 4, backgroundColor: AppColors.online),
                           SizedBox(width: 6),
-                          Text('Online', style: TextStyle(color: AppColors.online, fontSize: 11, fontWeight: FontWeight.w700)),
+                          Text('Online',
+                              style: TextStyle(
+                                  color: AppColors.online,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700)),
                         ],
                       ),
                     )
@@ -65,9 +74,11 @@ class DashboardScreen extends StatelessWidget {
               children: [
                 // Alerts
                 if (state.hasCriticalFood)
-                  AlertBanner.warning('⚠ Pond C hopper is critically low (19%). Refill soon.'),
+                  AlertBanner.warning(
+                      '⚠ Pond C hopper is critically low (19%). Refill soon.'),
                 if (state.hasOfflinePond)
-                  AlertBanner.warning('Pond B feeder is offline. Last ping: 8h ago.'),
+                  AlertBanner.warning(
+                      'Pond B feeder is offline. Last ping: 8h ago.'),
 
                 const SizedBox(height: 8),
 
@@ -76,11 +87,23 @@ class DashboardScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
                     children: [
-                      _StatCard(label: 'Feeds Today', value: '2', icon: Icons.restaurant_outlined, color: AppColors.primary),
+                      _StatCard(
+                          label: 'Feeds Today',
+                          value: '2',
+                          icon: Icons.restaurant_outlined,
+                          color: AppColors.primary),
                       const SizedBox(width: 12),
-                      _StatCard(label: 'Food Level', value: '67%', icon: Icons.water_drop_outlined, color: AppColors.info),
+                      _StatCard(
+                          label: 'Food Level',
+                          value: '67%',
+                          icon: Icons.water_drop_outlined,
+                          color: AppColors.info),
                       const SizedBox(width: 12),
-                      _StatCard(label: 'Temp', value: '24°C', icon: Icons.thermostat_outlined, color: AppColors.warning),
+                      _StatCard(
+                          label: 'Temp',
+                          value: '24°C',
+                          icon: Icons.thermostat_outlined,
+                          color: AppColors.warning),
                     ],
                   ),
                 ),
@@ -101,17 +124,22 @@ class DashboardScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const SectionHeader(label: 'Today', title: 'Feed Schedules'),
+                      const SectionHeader(
+                          label: 'Today', title: 'Feed Schedules'),
                       TextButton(
                         onPressed: () {},
-                        child: const Text('+ Add', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700)),
+                        child: const Text('+ Add',
+                            style: TextStyle(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w700)),
                       )
                     ],
                   ),
                 ),
 
                 ...todaySchedules.map((s) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 5),
                       child: _ScheduleCard(schedule: s),
                     )),
 
@@ -120,11 +148,13 @@ class DashboardScreen extends StatelessWidget {
                 // Recent feed logs
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: const SectionHeader(label: 'History', title: 'Recent Feed Events'),
+                  child: const SectionHeader(
+                      label: 'History', title: 'Recent Feed Events'),
                 ),
                 const SizedBox(height: 10),
                 ...state.feedLogs.take(4).map((log) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 4),
                       child: _FeedLogTile(log: log),
                     )),
 
@@ -144,7 +174,11 @@ class _StatCard extends StatelessWidget {
   final IconData icon;
   final Color color;
 
-  const _StatCard({required this.label, required this.value, required this.icon, required this.color});
+  const _StatCard(
+      {required this.label,
+      required this.value,
+      required this.icon,
+      required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +195,9 @@ class _StatCard extends StatelessWidget {
           children: [
             Icon(icon, color: color, size: 18),
             const SizedBox(height: 8),
-            Text(value, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: color)),
+            Text(value,
+                style: TextStyle(
+                    fontSize: 18, fontWeight: FontWeight.w900, color: color)),
             const SizedBox(height: 2),
             Text(label, style: AppTextStyles.bodySmall.copyWith(fontSize: 10)),
           ],
@@ -181,9 +217,16 @@ class _ManualFeedCardState extends State<_ManualFeedCard> {
   bool _fed = false;
 
   void _triggerFeed() async {
-    setState(() { _feeding = true; _fed = false; });
+    setState(() {
+      _feeding = true;
+      _fed = false;
+    });
     await Future.delayed(const Duration(seconds: 2));
-    if (mounted) setState(() { _feeding = false; _fed = true; });
+    if (mounted)
+      setState(() {
+        _feeding = false;
+        _fed = true;
+      });
     await Future.delayed(const Duration(seconds: 3));
     if (mounted) setState(() => _fed = false);
   }
@@ -207,20 +250,37 @@ class _ManualFeedCardState extends State<_ManualFeedCard> {
             children: [
               const Icon(Icons.flash_on, color: Colors.white70, size: 14),
               const SizedBox(width: 6),
-              const Text('MANUAL TRIGGER', style: TextStyle(color: Colors.white60, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.2)),
+              const Text('MANUAL TRIGGER',
+                  style: TextStyle(
+                      color: Colors.white60,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.2)),
               const Spacer(),
               if (_fed)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(color: AppColors.accent.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(20)),
-                  child: const Text('✓ Fed!', style: TextStyle(color: AppColors.accent, fontSize: 11, fontWeight: FontWeight.w700)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                      color: AppColors.accent.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: const Text('✓ Fed!',
+                      style: TextStyle(
+                          color: AppColors.accent,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700)),
                 ),
             ],
           ),
           const SizedBox(height: 6),
-          const Text('Feed Now', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900)),
+          const Text('Feed Now',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w900)),
           const SizedBox(height: 4),
-          const Text('Servo runs for 8 seconds · ~120g portion', style: TextStyle(color: Colors.white60, fontSize: 11)),
+          const Text('Servo runs for 8 seconds · ~120g portion',
+              style: TextStyle(color: Colors.white60, fontSize: 11)),
           const SizedBox(height: 14),
           SizedBox(
             width: double.infinity,
@@ -229,21 +289,29 @@ class _ManualFeedCardState extends State<_ManualFeedCard> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.accent,
                 foregroundColor: AppColors.background,
-                disabledBackgroundColor: AppColors.accent.withValues(alpha: 0.4),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                disabledBackgroundColor:
+                    AppColors.accent.withValues(alpha: 0.4),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
                 minimumSize: const Size(double.infinity, 44),
               ),
               child: _feeding
                   ? const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.background)),
+                        SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                                strokeWidth: 2, color: AppColors.background)),
                         SizedBox(width: 10),
-                        Text('Dispensing feed...', style: TextStyle(fontWeight: FontWeight.w700)),
+                        Text('Dispensing feed...',
+                            style: TextStyle(fontWeight: FontWeight.w700)),
                       ],
                     )
                   : Text(_fed ? '✓ Feed Dispensed' : 'Trigger Manual Feed',
-                      style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 14)),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w800, fontSize: 14)),
             ),
           ),
         ],
@@ -270,19 +338,30 @@ class _ScheduleCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 42, height: 42,
+            width: 42,
+            height: 42,
             decoration: BoxDecoration(
-              color: schedule.isEnabled ? const Color(0xFFF0FDF4) : const Color(0xFFF8FAFC),
+              color: schedule.isEnabled
+                  ? const Color(0xFFF0FDF4)
+                  : const Color(0xFFF8FAFC),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(Icons.schedule, color: schedule.isEnabled ? AppColors.primary : AppColors.textLight, size: 20),
+            child: Icon(Icons.schedule,
+                color: schedule.isEnabled
+                    ? AppColors.primary
+                    : AppColors.textLight,
+                size: 20),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(schedule.timeLabel, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppColors.textDark)),
+                Text(schedule.timeLabel,
+                    style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.textDark)),
                 const SizedBox(height: 2),
                 Text(
                   '${schedule.portionGrams.toStringAsFixed(0)}g · ${schedule.durationSeconds}s servo',
@@ -311,7 +390,8 @@ class _FeedLogTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final now = DateTime.now();
     final diff = now.difference(log.timestamp);
-    final timeAgo = diff.inHours > 0 ? '${diff.inHours}h ago' : '${diff.inMinutes}m ago';
+    final timeAgo =
+        diff.inHours > 0 ? '${diff.inHours}h ago' : '${diff.inMinutes}m ago';
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -324,26 +404,40 @@ class _FeedLogTile extends StatelessWidget {
         children: [
           Icon(
             log.trigger == 'manual' ? Icons.touch_app_outlined : Icons.schedule,
-            color: AppColors.textLight, size: 16,
+            color: AppColors.textLight,
+            size: 16,
           ),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('${log.pondName} · ${log.portionGrams.toStringAsFixed(0)}g', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textDark)),
-                Text('${log.trigger} · $timeAgo', style: AppTextStyles.bodySmall.copyWith(fontSize: 11)),
+                Text(
+                    '${log.pondName} · ${log.portionGrams.toStringAsFixed(0)}g',
+                    style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textDark)),
+                Text('${log.trigger} · $timeAgo',
+                    style: AppTextStyles.bodySmall.copyWith(fontSize: 11)),
               ],
             ),
           ),
           if (!log.synced)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-              decoration: BoxDecoration(color: const Color(0xFFFEF9C3), borderRadius: BorderRadius.circular(8)),
-              child: const Text('Offline', style: TextStyle(color: AppColors.warning, fontSize: 10, fontWeight: FontWeight.w700)),
+              decoration: BoxDecoration(
+                  color: const Color(0xFFFEF9C3),
+                  borderRadius: BorderRadius.circular(8)),
+              child: const Text('Offline',
+                  style: TextStyle(
+                      color: AppColors.warning,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700)),
             )
           else
-            const Icon(Icons.cloud_done_outlined, color: AppColors.textLight, size: 16),
+            const Icon(Icons.cloud_done_outlined,
+                color: AppColors.textLight, size: 16),
         ],
       ),
     );
