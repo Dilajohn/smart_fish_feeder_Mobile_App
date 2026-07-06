@@ -112,25 +112,31 @@ class ProfileScreen extends StatelessWidget {
           // Account
           const SectionHeader(label: 'Account'),
           const SizedBox(height: 8),
-          const AppCard(
+          AppCard(
             padding: EdgeInsets.zero,
             child: Column(
               children: [
-                _NavRow(
+                const _NavRow(
                     icon: Icons.notifications_outlined,
                     label: 'Notifications',
                     trailingStatus: 'On',
                     color: AppColors.online),
-                Divider(height: 1),
-                _NavRow(
+                const Divider(height: 1),
+                const _NavRow(
                     icon: Icons.lock_outline,
                     label: 'Change password',
                     chevron: true),
-                Divider(height: 1),
-                _NavRow(
+                const Divider(height: 1),
+                const _NavRow(
                     icon: Icons.person_add_outlined,
                     label: 'Invite team member',
                     chevron: true),
+                const Divider(height: 1),
+                _NavRow(
+                    icon: Icons.dns_outlined,
+                    label: 'Database connection',
+                    chevron: true,
+                    onTap: () => Navigator.pushNamed(context, '/db-settings')),
               ],
             ),
           ),
@@ -267,6 +273,7 @@ class _NavRow extends StatelessWidget {
   final bool chevron;
   final String? trailingStatus;
   final Color? color;
+  final VoidCallback? onTap;
 
   const _NavRow({
     required this.icon,
@@ -274,32 +281,36 @@ class _NavRow extends StatelessWidget {
     this.chevron = false,
     this.trailingStatus,
     this.color,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      child: Row(
-        children: [
-          Icon(icon, size: 16, color: AppColors.textMedium),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(label,
-                style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textDark)),
-          ),
-          if (trailingStatus != null)
-            StatusBadge(
-                label: trailingStatus!,
-                color: color ?? AppColors.online,
-                bgColor: const Color(0xFFDCFCE7))
-          else if (chevron)
-            const Icon(Icons.chevron_right,
-                size: 18, color: AppColors.textLight),
-        ],
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        child: Row(
+          children: [
+            Icon(icon, size: 16, color: AppColors.textMedium),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(label,
+                  style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textDark)),
+            ),
+            if (trailingStatus != null)
+              StatusBadge(
+                  label: trailingStatus!,
+                  color: color ?? AppColors.online,
+                  bgColor: const Color(0xFFDCFCE7))
+            else if (chevron)
+              const Icon(Icons.chevron_right,
+                  size: 18, color: AppColors.textLight),
+          ],
+        ),
       ),
     );
   }

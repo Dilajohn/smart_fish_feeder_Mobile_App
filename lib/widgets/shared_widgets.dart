@@ -19,11 +19,7 @@ class AppBottomNav extends StatelessWidget {
       onDestinationSelected: onTap,
       backgroundColor: Colors.white,
       elevation: 0,
-<<<<<<< HEAD
       indicatorColor: AppColors.primary.withValues(alpha: 0.1),
-=======
-      indicatorColor: AppColors.primary.withValues(alpha: 0.1),
->>>>>>> main
       labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
       destinations: const [
         NavigationDestination(
@@ -100,12 +96,9 @@ class StatusBadge extends StatelessWidget {
   factory StatusBadge.warning(String label) => StatusBadge(
       label: label, color: AppColors.warning, bgColor: const Color(0xFFFEF9C3));
 
-<<<<<<< HEAD
-=======
   factory StatusBadge.success([String label = 'Success']) => StatusBadge(
       label: label, color: AppColors.online, bgColor: const Color(0xFFDCFCE7));
 
->>>>>>> main
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -170,11 +163,7 @@ class AlertBanner extends StatelessWidget {
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(12),
-<<<<<<< HEAD
         border: Border.all(color: color.withValues(alpha: 0.3)),
-=======
-        border: Border.all(color: color.withValues(alpha: 0.3)),
->>>>>>> main
       ),
       child: Row(
         children: [
@@ -230,11 +219,7 @@ class TechChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-<<<<<<< HEAD
         border: Border.all(color: AppColors.accent.withValues(alpha: 0.5)),
-=======
-        border: Border.all(color: AppColors.accent.withValues(alpha: 0.5)),
->>>>>>> main
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
@@ -250,22 +235,12 @@ class TechChip extends StatelessWidget {
 }
 
 // ── Row key-value pair ─────────────────────────────────────
-<<<<<<< HEAD
-class DataRow extends StatelessWidget {
-  const DataRow({super.key});
-
-=======
 class InfoRow extends StatelessWidget {
->>>>>>> main
   final String label;
   final String value;
   final Widget? trailing;
 
-<<<<<<< HEAD
-  const DataRow({
-=======
   const InfoRow({
->>>>>>> main
     super.key,
     required this.label,
     required this.value,

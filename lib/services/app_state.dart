@@ -1,7 +1,82 @@
 import 'package:flutter/material.dart';
 import '../models/models.dart';
+import 'database_service.dart';
 
 class AppState extends ChangeNotifier {
+  final DatabaseService dbService = DatabaseService();
+  bool dbOnline = false;
+
+  AppState() {
+    initDatabase();
+  }
+
+  // Asynchronously initialize database connection and load dynamic data
+  Future<void> initDatabase() async {
+    await dbService.loadSettings();
+    if (dbService.usePostgres) {
+      final connected = await dbService.connect();
+      if (connected) {
+        dbOnline = true;
+        await refreshData();
+        return;
+      }
+    }
+    dbOnline = false;
+    notifyListeners();
+  }
+
+  // Refresh all state variables from the database
+  Future<void> refreshData() async {
+    if (!dbOnline) return;
+
+    try {
+      final dbPonds = await dbService.getPonds();
+      if (dbPonds.isNotEmpty) {
+        _ponds = dbPonds;
+        // Keep hopper level in sync with Pond A
+        final pondA = _ponds.firstWhere((p) => p.name == 'Pond A', orElse: () => _ponds.first);
+        _hopperLevel = pondA.foodPercent;
+      }
+
+      final dbSchedules = await dbService.getSchedules();
+      if (dbSchedules.isNotEmpty) {
+        _schedules = dbSchedules;
+      }
+
+      final dbLogs = await dbService.getFeedLogs();
+      if (dbLogs.isNotEmpty) {
+        _feedLogs = dbLogs;
+      }
+
+      final dbDevice = await dbService.getDeviceInfo('SFF-001-KLA');
+      if (dbDevice != null) {
+        _deviceInfo = dbDevice;
+      }
+
+      final dbSync = await dbService.getSyncStatus();
+      if (dbSync != null) {
+        _syncStatus = dbSync;
+      }
+    } catch (e) {
+      debugPrint('Error refreshing data from PostgreSQL: $e');
+      dbOnline = false;
+    }
+    notifyListeners();
+  }
+
+  // Force database reconnect and refresh
+  Future<bool> reconnectDatabase() async {
+    await dbService.disconnect();
+    final connected = await dbService.connect();
+    dbOnline = connected;
+    if (connected) {
+      await refreshData();
+    } else {
+      notifyListeners();
+    }
+    return connected;
+  }
+
   // ── Ponds ──────────────────────────────────────────────────
   List<PondModel> _ponds = [
     PondModel(
@@ -41,7 +116,11 @@ class AppState extends ChangeNotifier {
   bool get hasOfflinePond => _ponds.any((p) => !p.isOnline);
   bool get hasCriticalFood => _ponds.any((p) => p.isOnline && p.isFoodLow);
 
-  void addPond(PondModel pond) {
+  Future<void> addPond(PondModel pond) async {
+    if (dbOnline) {
+      final success = await dbService.addPond(pond);
+      if (!success) return;
+    }
     _ponds = [..._ponds, pond];
     notifyListeners();
   }
@@ -88,21 +167,33 @@ class AppState extends ChangeNotifier {
 
   List<FeedSchedule> get schedules => _schedules;
 
-  void toggleSchedule(String id) {
+  Future<void> toggleSchedule(String id) async {
+    bool? newStatus;
     _schedules = _schedules.map((s) {
-      if (s.id == id) return s.copyWith(isEnabled: !s.isEnabled);
+      if (s.id == id) {
+        newStatus = !s.isEnabled;
+        return s.copyWith(isEnabled: newStatus);
+      }
       return s;
     }).toList();
+
+    if (dbOnline && newStatus != null) {
+      await dbService.toggleSchedule(id, newStatus!);
+    }
     notifyListeners();
   }
 
-  void addSchedule(FeedSchedule schedule) {
+  Future<void> addSchedule(FeedSchedule schedule) async {
+    if (dbOnline) {
+      final success = await dbService.addSchedule(schedule);
+      if (!success) return;
+    }
     _schedules = [..._schedules, schedule];
     notifyListeners();
   }
 
   // ── Feed Logs ──────────────────────────────────────────────
-  final List<FeedLog> feedLogs = [
+  List<FeedLog> _feedLogs = [
     FeedLog(id: 'log-1', pondName: 'Pond A', timestamp: DateTime.now().subtract(const Duration(hours: 1, minutes: 15)), portionGrams: 120, trigger: 'scheduled', synced: true),
     FeedLog(id: 'log-2', pondName: 'Pond A', timestamp: DateTime.now().subtract(const Duration(hours: 7)), portionGrams: 150, trigger: 'scheduled', synced: true),
     FeedLog(id: 'log-3', pondName: 'Pond C', timestamp: DateTime.now().subtract(const Duration(hours: 2)), portionGrams: 90, trigger: 'manual', synced: true),
@@ -110,8 +201,19 @@ class AppState extends ChangeNotifier {
     FeedLog(id: 'log-5', pondName: 'Pond C', timestamp: DateTime.now().subtract(const Duration(days: 1, hours: 5)), portionGrams: 90, trigger: 'scheduled', synced: true),
   ];
 
+  List<FeedLog> get feedLogs => _feedLogs;
+
+  Future<void> addFeedLog(FeedLog log) async {
+    if (dbOnline) {
+      await dbService.addFeedLog(log);
+    }
+    _feedLogs = [log, ..._feedLogs];
+    notifyListeners();
+  }
+
   // ── Device Info ────────────────────────────────────────────
-  DeviceInfo get deviceInfo => const DeviceInfo(
+  DeviceInfo? _deviceInfo;
+  DeviceInfo get deviceInfo => _deviceInfo ?? const DeviceInfo(
         serial: 'SFF-001-KLA',
         pondName: 'Pond A',
         firmwareVersion: 'v1.2.4',
@@ -130,7 +232,8 @@ class AppState extends ChangeNotifier {
       );
 
   // ── Sync Status ───────────────────────────────────────────
-  SyncStatusModel get syncStatus => SyncStatusModel(
+  SyncStatusModel? _syncStatus;
+  SyncStatusModel get syncStatus => _syncStatus ?? SyncStatusModel(
         pendingUploads: 3,
         failedRetries: 1,
         recoveredEvents: 2,
@@ -144,8 +247,19 @@ class AppState extends ChangeNotifier {
   double _hopperLevel = 67.0;
   double get hopperLevel => _hopperLevel;
 
-  void setHopperLevel(double value) {
+  Future<void> setHopperLevel(double value) async {
     _hopperLevel = value;
+    // Keep local pond percent in sync
+    _ponds = _ponds.map((p) {
+      if (p.name == 'Pond A') {
+        return p.copyWith(foodPercent: value);
+      }
+      return p;
+    }).toList();
+
+    if (dbOnline) {
+      await dbService.updatePondHopperLevel('Pond A', value);
+    }
     notifyListeners();
   }
 

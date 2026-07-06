@@ -67,7 +67,6 @@ class FeedSchedule {
   });
 
   String get timeLabel {
-    final h = time.hour.toString().padLeft(2, '0');
     final m = time.minute.toString().padLeft(2, '0');
     final period = time.period == DayPeriod.am ? 'AM' : 'PM';
     final h12 = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;

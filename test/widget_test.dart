@@ -1,13 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-<<<<<<< HEAD
-import 'package:flutter/material.dart';
-=======
->>>>>>> main
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_fish_feeder/main.dart';
 import 'package:smart_fish_feeder/services/app_state.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences.setMockInitialValues({});
   testWidgets('App launches and shows splash screen', (WidgetTester tester) async {
     await tester.pumpWidget(
       ChangeNotifierProvider(

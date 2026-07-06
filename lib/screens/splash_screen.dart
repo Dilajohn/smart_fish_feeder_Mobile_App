@@ -99,15 +99,9 @@ class _SplashScreenState extends State<SplashScreen>
                     height: 110,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-<<<<<<< HEAD
                       color: Colors.white.withValues(alpha: 0.06),
                       border: Border.all(
                         color: Colors.white.withValues(alpha: 0.12),
-=======
-                      color: Colors.white.withValues(alpha: 0.06),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.12),
->>>>>>> main
                         width: 1.5,
                       ),
                     ),
@@ -185,11 +179,7 @@ class _SplashScreenState extends State<SplashScreen>
                     borderRadius: BorderRadius.circular(3),
                     child: LinearProgressIndicator(
                       value: _loadProgress,
-<<<<<<< HEAD
                       backgroundColor: Colors.white.withValues(alpha: 0.12),
-=======
-                      backgroundColor: Colors.white.withValues(alpha: 0.12),
->>>>>>> main
                       valueColor: const AlwaysStoppedAnimation<Color>(
                         AppColors.accent,
                       ),
@@ -220,11 +210,7 @@ class _SplashScreenState extends State<SplashScreen>
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-<<<<<<< HEAD
         color: AppColors.accent.withValues(alpha: 0.07),
-=======
-        color: AppColors.accent.withValues(alpha: 0.07),
->>>>>>> main
       ),
     );
   }
@@ -240,11 +226,7 @@ class _TechChip extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 6),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       decoration: BoxDecoration(
-<<<<<<< HEAD
         border: Border.all(color: AppColors.accent.withValues(alpha: 0.35)),
-=======
-        border: Border.all(color: AppColors.accent.withValues(alpha: 0.35)),
->>>>>>> main
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(

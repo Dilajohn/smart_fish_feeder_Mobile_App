@@ -22,6 +22,7 @@ import 'package:smart_fish_feeder/screens/water_alert_screen.dart';
 import 'package:smart_fish_feeder/screens/analytics_screen.dart';
 import 'package:smart_fish_feeder/screens/notifications_screen.dart';
 import 'package:smart_fish_feeder/screens/profile_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Widget _wrap(Widget child) => ChangeNotifierProvider(
       create: (_) => AppState(),
@@ -29,6 +30,8 @@ Widget _wrap(Widget child) => ChangeNotifierProvider(
     );
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences.setMockInitialValues({});
   // ── Existing screens ───────────────────────────────────────
   testWidgets('SplashScreen renders brand title', (tester) async {
     await tester.pumpWidget(_wrap(const SplashScreen()));
@@ -141,7 +144,7 @@ void main() {
     await tester.pumpWidget(_wrap(const AnalyticsScreen()));
     expect(find.text('This week'), findsOneWidget);
     expect(find.text('Total feeds'), findsOneWidget);
-    expect(find.text('Daily feed (grams)'), findsOneWidget);
+    expect(find.text('DAILY FEED (GRAMS)'), findsOneWidget);
   });
 
   testWidgets('NotificationsScreen renders Today/Yesterday', (tester) async {
@@ -154,7 +157,7 @@ void main() {
   testWidgets('ProfileScreen renders profile + system', (tester) async {
     await tester.pumpWidget(_wrap(const ProfileScreen()));
     expect(find.text('My profile'), findsOneWidget);
-    expect(find.text('Okuja'), findsOneWidget);
+    expect(find.text('GROUP21'), findsOneWidget);
     expect(find.text('farmer@pondA.ug'), findsOneWidget);
     expect(find.text('Sign out'), findsOneWidget);
     expect(find.text('v1.0.0'), findsOneWidget);

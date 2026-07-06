@@ -51,11 +51,7 @@ class _QrPairScreenState extends State<QrPairScreen> {
           if (_scanned)
             Padding(
               padding: const EdgeInsets.only(right: 16),
-<<<<<<< HEAD
-              child: StatusBadge.success(),
-=======
               child: StatusBadge.success('Scanned'),
->>>>>>> main
             ),
         ],
       ),
@@ -136,11 +132,7 @@ class _QrPairScreenState extends State<QrPairScreen> {
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-<<<<<<< HEAD
                             Icon(Icons.qr_code_2, color: AppColors.accent.withValues(alpha: 0.6), size: 80),
-=======
-                            Icon(Icons.qr_code_2, color: AppColors.accent.withValues(alpha: 0.6), size: 80),
->>>>>>> main
                             const SizedBox(height: 12),
                             const Text('Point camera at feeder QR sticker', style: TextStyle(color: Colors.white38, fontSize: 12)),
                           ],
@@ -189,24 +181,14 @@ class _QrPairScreenState extends State<QrPairScreen> {
                 const SizedBox(height: 2),
                 Text('SFF-003-KLA', style: AppTextStyles.monoBadge.copyWith(color: AppColors.textLight)),
                 const Divider(height: 24),
-<<<<<<< HEAD
-                DataRow(label: 'Motherboard Specs', value: 'Uno + ESP8266 Node'),
-                DataRow(label: 'Micro-Code Version', value: 'v1.2.4 Standard'),
-                DataRow(
-=======
-                InfoRow(label: 'Motherboard Specs', value: 'Uno + ESP8266 Node'),
-                InfoRow(label: 'Micro-Code Version', value: 'v1.2.4 Standard'),
+                const InfoRow(label: 'Motherboard Specs', value: 'Uno + ESP8266 Node'),
+                const InfoRow(label: 'Micro-Code Version', value: 'v1.2.4 Standard'),
                 InfoRow(
->>>>>>> main
                   label: 'Network Status',
                   value: '',
                   trailing: StatusBadge.warning('Unclaimed'),
                 ),
-<<<<<<< HEAD
-                DataRow(label: 'Device Registered', value: 'June 18, 2026'),
-=======
-                InfoRow(label: 'Device Registered', value: 'June 18, 2026'),
->>>>>>> main
+                const InfoRow(label: 'Device Registered', value: 'June 18, 2026'),
               ],
             ),
           ),
@@ -274,8 +256,4 @@ class _Step extends StatelessWidget {
       ],
     );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> main
