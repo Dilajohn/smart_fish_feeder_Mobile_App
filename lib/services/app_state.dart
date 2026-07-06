@@ -48,37 +48,37 @@ class AppState extends ChangeNotifier {
 
   // ── Schedules ──────────────────────────────────────────────
   List<FeedSchedule> _schedules = [
-    FeedSchedule(
+    const FeedSchedule(
       id: 'sch-001',
       pondName: 'Pond A',
-      time: const TimeOfDay(hour: 6, minute: 0),
+      time: TimeOfDay(hour: 6, minute: 0),
       durationSeconds: 8,
       portionGrams: 120,
       isEnabled: true,
       weekdays: [true, true, true, true, true, true, true],
     ),
-    FeedSchedule(
+    const FeedSchedule(
       id: 'sch-002',
       pondName: 'Pond A',
-      time: const TimeOfDay(hour: 12, minute: 0),
+      time: TimeOfDay(hour: 12, minute: 0),
       durationSeconds: 10,
       portionGrams: 150,
       isEnabled: true,
       weekdays: [true, true, true, true, true, true, true],
     ),
-    FeedSchedule(
+    const FeedSchedule(
       id: 'sch-003',
       pondName: 'Pond A',
-      time: const TimeOfDay(hour: 17, minute: 0),
+      time: TimeOfDay(hour: 17, minute: 0),
       durationSeconds: 8,
       portionGrams: 120,
       isEnabled: false,
       weekdays: [true, true, true, true, true, false, false],
     ),
-    FeedSchedule(
+    const FeedSchedule(
       id: 'sch-004',
       pondName: 'Pond C',
-      time: const TimeOfDay(hour: 17, minute: 0),
+      time: TimeOfDay(hour: 17, minute: 0),
       durationSeconds: 6,
       portionGrams: 90,
       isEnabled: true,
@@ -111,15 +111,15 @@ class AppState extends ChangeNotifier {
   ];
 
   // ── Device Info ────────────────────────────────────────────
-  DeviceInfo get deviceInfo => DeviceInfo(
+  DeviceInfo get deviceInfo => const DeviceInfo(
         serial: 'SFF-001-KLA',
         pondName: 'Pond A',
         firmwareVersion: 'v1.2.4',
         latestFirmware: 'v1.3.0',
         wifiRssi: -61,
         pingMs: 142,
-        uptime: const Duration(days: 3, hours: 14, minutes: 22),
-        hardwareStatus: const {
+        uptime: Duration(days: 3, hours: 14, minutes: 22),
+        hardwareStatus: {
           'Servo Feed Motor': 'OK',
           'Ultrasonic Depth Sensor': 'OK',
           'DS3231 RTC Clock': 'Synced',

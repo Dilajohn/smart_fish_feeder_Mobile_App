@@ -125,19 +125,19 @@ class _QrPairScreenState extends State<QrPairScreen> {
               children: [
                 Center(
                   child: _scanning
-                      ? Column(
+                      ? const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const CircularProgressIndicator(color: AppColors.accent),
-                            const SizedBox(height: 16),
-                            const Text('Scanning device sticker...', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                            CircularProgressIndicator(color: AppColors.accent),
+                            SizedBox(height: 16),
+                            Text('Scanning device sticker...', style: TextStyle(color: Colors.white70, fontSize: 12)),
                           ],
                         )
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
 <<<<<<< HEAD
-                            Icon(Icons.qr_code_2, color: AppColors.accent.withOpacity(0.6), size: 80),
+                            Icon(Icons.qr_code_2, color: AppColors.accent.withValues(alpha: 0.6), size: 80),
 =======
                             Icon(Icons.qr_code_2, color: AppColors.accent.withValues(alpha: 0.6), size: 80),
 >>>>>>> main
@@ -152,10 +152,10 @@ class _QrPairScreenState extends State<QrPairScreen> {
             ),
           ),
           const SizedBox(height: 24),
-          AppCard(
+          const AppCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text('Where to find the QR code', style: AppTextStyles.cardTitle),
                 SizedBox(height: 12),
                 _Step(num: '1', text: 'Locate the white sticker on the side of your feeder device'),
@@ -181,7 +181,7 @@ class _QrPairScreenState extends State<QrPairScreen> {
               children: [
                 Container(
                   width: 48, height: 48,
-                  decoration: BoxDecoration(color: const Color(0xFFF0FDF4), shape: BoxShape.circle),
+                  decoration: const BoxDecoration(color: Color(0xFFF0FDF4), shape: BoxShape.circle),
                   child: const Icon(Icons.qr_code, color: AppColors.primary, size: 24),
                 ),
                 const SizedBox(height: 10),
@@ -214,7 +214,7 @@ class _QrPairScreenState extends State<QrPairScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('RENAME / ASSIGN POND NICKNAME', style: AppTextStyles.screenLabel),
+              const Text('RENAME / ASSIGN POND NICKNAME', style: AppTextStyles.screenLabel),
               const SizedBox(height: 8),
               TextField(
                 controller: _nameCtrl,

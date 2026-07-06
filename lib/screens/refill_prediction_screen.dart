@@ -13,7 +13,7 @@ class RefillPredictionScreen extends StatefulWidget {
 }
 
 class _RefillPredictionScreenState extends State<RefillPredictionScreen> {
-  bool _reminderSet = false;
+  final bool _reminderSet = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class _RefillPredictionScreenState extends State<RefillPredictionScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('FOOD MANAGEMENT', style: AppTextStyles.screenLabel),
+            const Text('FOOD MANAGEMENT', style: AppTextStyles.screenLabel),
 <<<<<<< HEAD
             const Text('Refill Prediction', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppColors.textDark)),
 =======
@@ -44,7 +44,7 @@ class _RefillPredictionScreenState extends State<RefillPredictionScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 16),
 <<<<<<< HEAD
-            child: StatusBadge(label: 'Active', color: AppColors.online, bgColor: const Color(0xFFDCFCE7)),
+            child: const StatusBadge(label: 'Active', color: AppColors.online, bgColor: Color(0xFFDCFCE7)),
 =======
             child: StatusBadge(
                 label: 'Active',
@@ -63,9 +63,9 @@ class _RefillPredictionScreenState extends State<RefillPredictionScreen> {
               child: Column(
                 children: [
 <<<<<<< HEAD
-                  Text('INTERACTIVE FOOD QUANTITY', style: AppTextStyles.screenLabel),
+                  const Text('INTERACTIVE FOOD QUANTITY', style: AppTextStyles.screenLabel),
 =======
-                  Text('INTERACTIVE FOOD QUANTITY',
+                  const Text('INTERACTIVE FOOD QUANTITY',
                       style: AppTextStyles.screenLabel),
 >>>>>>> main
                   const SizedBox(height: 16),

@@ -16,11 +16,11 @@ class MultiPondScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.cardBg,
       appBar: AppBar(
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('FARM DASHBOARD', style: AppTextStyles.screenLabel),
-            const Text('All Ugandan Ponds', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppColors.textDark)),
+            Text('All Ugandan Ponds', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppColors.textDark)),
           ],
         ),
         actions: [
@@ -116,10 +116,10 @@ class _PondCard extends StatelessWidget {
           // Header row
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF8FAFC),
-              borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
-              border: const Border(bottom: BorderSide(color: Color(0xFFE2E8F0))),
+            decoration: const BoxDecoration(
+              color: Color(0xFFF8FAFC),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+              border: Border(bottom: BorderSide(color: Color(0xFFE2E8F0))),
             ),
             child: Row(
               children: [

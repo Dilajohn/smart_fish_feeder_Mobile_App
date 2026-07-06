@@ -19,7 +19,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
   bool _enableImmediately = true;
   bool _syncNow = true;
   // 0=Mon, 1=Tue ... 6=Sun
-  late List<bool> _days = [true, false, true, false, true, false, false];
+  late final List<bool> _days = [true, false, true, false, true, false, false];
   bool _saving = false;
 
   static const _portions = {
@@ -74,9 +74,9 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
     return Scaffold(
       backgroundColor: AppColors.cardBg,
       appBar: AppBar(
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text('SCHEDULE MANAGER',
                 style: TextStyle(color: AppColors.textLight, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.2)),
             Text('New schedule',

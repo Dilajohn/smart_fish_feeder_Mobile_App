@@ -22,7 +22,7 @@ class CooldownLockScreen extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('SAFETY SYSTEM', style: AppTextStyles.screenLabel),
+            const Text('SAFETY SYSTEM', style: AppTextStyles.screenLabel),
 <<<<<<< HEAD
             const Text('Cooldown Lock', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppColors.textDark)),
 =======
@@ -141,7 +141,7 @@ class CooldownLockScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('COOLDOWN PARAMETERS', style: AppTextStyles.screenLabel),
+                  const Text('COOLDOWN PARAMETERS', style: AppTextStyles.screenLabel),
                   const SizedBox(height: 12),
 <<<<<<< HEAD
                   DataRow(label: 'Cooldown Duration', value: '30 minutes'),
@@ -283,7 +283,7 @@ class _SyncStatusScreenState extends State<SyncStatusScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('EEPROM & CLOUD', style: AppTextStyles.screenLabel),
+            const Text('EEPROM & CLOUD', style: AppTextStyles.screenLabel),
 <<<<<<< HEAD
             const Text('Data Sync Status', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppColors.textDark)),
 =======
@@ -315,7 +315,7 @@ class _SyncStatusScreenState extends State<SyncStatusScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('SYNC COUNTERS', style: AppTextStyles.screenLabel),
+                  const Text('SYNC COUNTERS', style: AppTextStyles.screenLabel),
                   const SizedBox(height: 12),
 <<<<<<< HEAD
                   DataRow(label: 'Pending Uploads', value: '${sync.pendingUploads} events'),
@@ -355,7 +355,7 @@ class _SyncStatusScreenState extends State<SyncStatusScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('EEPROM MEMORY', style: AppTextStyles.screenLabel),
+                  const Text('EEPROM MEMORY', style: AppTextStyles.screenLabel),
                   const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -469,7 +469,7 @@ class _SyncStatusScreenState extends State<SyncStatusScreen> {
           ],
         ),
       ),
-    );
+    )
   }
 
   String _timeAgo(DateTime time) {
@@ -509,7 +509,7 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('DATA EXPORT PANEL', style: AppTextStyles.screenLabel),
+            const Text('DATA EXPORT PANEL', style: AppTextStyles.screenLabel),
 <<<<<<< HEAD
             const Text('Export Feed Log', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppColors.textDark)),
 =======
@@ -531,20 +531,20 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Date range
-                  Text('SELECT INTERVAL', style: AppTextStyles.screenLabel),
+                  const Text('SELECT INTERVAL', style: AppTextStyles.screenLabel),
                   const SizedBox(height: 8),
                   Row(
                     children: [
 <<<<<<< HEAD
-                      Expanded(child: _DateBox(label: 'From', value: 'Jun 01, 2026')),
+                      const Expanded(child: _DateBox(label: 'From', value: 'Jun 01, 2026')),
                       const SizedBox(width: 12),
-                      Expanded(child: _DateBox(label: 'To', value: 'Jun 18, 2026')),
+                      const Expanded(child: _DateBox(label: 'To', value: 'Jun 18, 2026')),
 =======
-                      Expanded(
+                      const Expanded(
                           child:
                               _DateBox(label: 'From', value: 'Jun 01, 2026')),
                       const SizedBox(width: 12),
-                      Expanded(
+                      const Expanded(
                           child: _DateBox(label: 'To', value: 'Jun 18, 2026')),
 >>>>>>> main
                     ],
@@ -552,7 +552,7 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
 
                   const SizedBox(height: 18),
 
-                  Text('SEGMENTS TO EXPORT', style: AppTextStyles.screenLabel),
+                  const Text('SEGMENTS TO EXPORT', style: AppTextStyles.screenLabel),
                   const SizedBox(height: 8),
                   AppCard(
                     padding: const EdgeInsets.symmetric(vertical: 4),
@@ -589,7 +589,7 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
 
                   const SizedBox(height: 18),
 
-                  Text('DISTRIBUTE FORMATS', style: AppTextStyles.screenLabel),
+                  const Text('DISTRIBUTE FORMATS', style: AppTextStyles.screenLabel),
                   const SizedBox(height: 8),
                   Row(
                     children: ['CSV', 'PDF', 'Excel'].map((f) {
@@ -871,18 +871,18 @@ class MenuScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
 <<<<<<< HEAD
-                color: AppColors.accent.withOpacity(0.1),
+                color: AppColors.accent.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.accent.withOpacity(0.3)),
+                border: Border.all(color: AppColors.accent.withValues(alpha: 0.3)),
               ),
-              child: Text('10 Screens', style: TextStyle(color: AppColors.accent, fontSize: 11, fontWeight: FontWeight.w700)),
+              child: const Text('10 Screens', style: TextStyle(color: AppColors.accent, fontSize: 11, fontWeight: FontWeight.w700)),
 =======
                 color: AppColors.accent.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
                 border:
                     Border.all(color: AppColors.accent.withValues(alpha: 0.3)),
               ),
-              child: Text('18 Screens',
+              child: const Text('18 Screens',
                   style: TextStyle(
                       color: AppColors.accent,
                       fontSize: 11,
@@ -899,9 +899,9 @@ class MenuScreen extends StatelessWidget {
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
 <<<<<<< HEAD
-              color: Colors.white.withOpacity(0.05),
+              color: Colors.white.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white.withOpacity(0.1)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
             ),
             child: const Text(
               '✨ Seamless navigation active: select any screen below to navigate to it.',
@@ -956,7 +956,7 @@ class MenuScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    )
   }
 }
 
@@ -989,9 +989,9 @@ class _ScreenTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
 <<<<<<< HEAD
-          color: Colors.white.withOpacity(0.05),
+          color: Colors.white.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white.withOpacity(0.08)),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
 =======
           color: Colors.white.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(12),
@@ -1033,6 +1033,6 @@ class _ScreenTile extends StatelessWidget {
           ],
         ),
       ),
-    );
+    )
   }
 }

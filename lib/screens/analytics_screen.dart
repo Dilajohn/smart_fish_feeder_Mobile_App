@@ -38,9 +38,9 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     return Scaffold(
       backgroundColor: AppColors.cardBg,
       appBar: AppBar(
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text('FEEDING ANALYTICS',
                 style: TextStyle(color: AppColors.textLight, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.2)),
             Text('This week',
@@ -157,10 +157,10 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             // Insights
             const SectionHeader(label: 'Insights'),
             const SizedBox(height: 8),
-            AppCard(
+            const AppCard(
               padding: EdgeInsets.zero,
               child: Column(
-                children: const [
+                children: [
                   _InsightRow(label: 'Refill estimate', value: '~6 days', color: AppColors.warning),
                   Divider(height: 1),
                   _InsightRow(label: 'Offline events', value: '2 this week', color: AppColors.textMedium),

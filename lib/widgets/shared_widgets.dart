@@ -20,7 +20,7 @@ class AppBottomNav extends StatelessWidget {
       backgroundColor: Colors.white,
       elevation: 0,
 <<<<<<< HEAD
-      indicatorColor: AppColors.primary.withOpacity(0.1),
+      indicatorColor: AppColors.primary.withValues(alpha: 0.1),
 =======
       indicatorColor: AppColors.primary.withValues(alpha: 0.1),
 >>>>>>> main
@@ -171,7 +171,7 @@ class AlertBanner extends StatelessWidget {
         color: bgColor,
         borderRadius: BorderRadius.circular(12),
 <<<<<<< HEAD
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
 =======
         border: Border.all(color: color.withValues(alpha: 0.3)),
 >>>>>>> main
@@ -231,7 +231,7 @@ class TechChip extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
 <<<<<<< HEAD
-        border: Border.all(color: AppColors.accent.withOpacity(0.5)),
+        border: Border.all(color: AppColors.accent.withValues(alpha: 0.5)),
 =======
         border: Border.all(color: AppColors.accent.withValues(alpha: 0.5)),
 >>>>>>> main
@@ -252,6 +252,8 @@ class TechChip extends StatelessWidget {
 // ── Row key-value pair ─────────────────────────────────────
 <<<<<<< HEAD
 class DataRow extends StatelessWidget {
+  const DataRow({super.key});
+
 =======
 class InfoRow extends StatelessWidget {
 >>>>>>> main

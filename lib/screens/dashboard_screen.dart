@@ -39,11 +39,11 @@ class DashboardScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
 <<<<<<< HEAD
-                        Text('FEEDER #001 · POND A', style: AppTextStyles.screenLabel),
+                        const Text('FEEDER #001 · POND A', style: AppTextStyles.screenLabel),
                         const SizedBox(height: 2),
                         const Text('Feeder Dashboard', style: AppTextStyles.screenTitle),
 =======
-                        Text('FEEDER #001 · POND A',
+                        const Text('FEEDER #001 · POND A',
                             style: AppTextStyles.screenLabel),
                         const SizedBox(height: 2),
                         const Text('Feeder Dashboard',
@@ -114,25 +114,25 @@ class DashboardScreen extends StatelessWidget {
                   child: Row(
                     children: [
 <<<<<<< HEAD
-                      _StatCard(label: 'Feeds Today', value: '2', icon: Icons.restaurant_outlined, color: AppColors.primary),
+                      const _StatCard(label: 'Feeds Today', value: '2', icon: Icons.restaurant_outlined, color: AppColors.primary),
                       const SizedBox(width: 12),
-                      _StatCard(label: 'Food Level', value: '67%', icon: Icons.water_drop_outlined, color: AppColors.info),
+                      const _StatCard(label: 'Food Level', value: '67%', icon: Icons.water_drop_outlined, color: AppColors.info),
                       const SizedBox(width: 12),
-                      _StatCard(label: 'Temp', value: '24°C', icon: Icons.thermostat_outlined, color: AppColors.warning),
+                      const _StatCard(label: 'Temp', value: '24°C', icon: Icons.thermostat_outlined, color: AppColors.warning),
 =======
-                      _StatCard(
+                      const _StatCard(
                           label: 'Feeds Today',
                           value: '2',
                           icon: Icons.restaurant_outlined,
                           color: AppColors.primary),
                       const SizedBox(width: 12),
-                      _StatCard(
+                      const _StatCard(
                           label: 'Food Level',
                           value: '67%',
                           icon: Icons.water_drop_outlined,
                           color: AppColors.info),
                       const SizedBox(width: 12),
-                      _StatCard(
+                      const _StatCard(
                           label: 'Temp',
                           value: '24°C',
                           icon: Icons.thermostat_outlined,
@@ -288,11 +288,12 @@ class _ManualFeedCardState extends State<_ManualFeedCard> {
       _fed = false;
     });
     await Future.delayed(const Duration(seconds: 2));
-    if (mounted)
+    if (mounted) {
       setState(() {
         _feeding = false;
         _fed = true;
       });
+    }
 >>>>>>> main
     await Future.delayed(const Duration(seconds: 3));
     if (mounted) setState(() => _fed = false);
@@ -373,7 +374,7 @@ class _ManualFeedCardState extends State<_ManualFeedCard> {
                 backgroundColor: AppColors.accent,
                 foregroundColor: AppColors.background,
 <<<<<<< HEAD
-                disabledBackgroundColor: AppColors.accent.withOpacity(0.4),
+                disabledBackgroundColor: AppColors.accent.withValues(alpha: 0.4),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
 =======
                 disabledBackgroundColor:
@@ -396,13 +397,13 @@ class _ManualFeedCardState extends State<_ManualFeedCard> {
                   : Text(_fed ? '✓ Feed Dispensed' : 'Trigger Manual Feed',
                       style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 14)),
 =======
-                        SizedBox(
+                        const SizedBox(
                             width: 16,
                             height: 16,
                             child: CircularProgressIndicator(
                                 strokeWidth: 2, color: AppColors.background)),
-                        SizedBox(width: 10),
-                        Text('Dispensing feed...',
+                        const SizedBox(width: 10),
+                        const Text('Dispensing feed...',
                             style: TextStyle(fontWeight: FontWeight.w700)),
                       ],
                     )

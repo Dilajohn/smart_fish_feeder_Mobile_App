@@ -100,9 +100,9 @@ class _SplashScreenState extends State<SplashScreen>
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
 <<<<<<< HEAD
-                      color: Colors.white.withOpacity(0.06),
+                      color: Colors.white.withValues(alpha: 0.06),
                       border: Border.all(
-                        color: Colors.white.withOpacity(0.12),
+                        color: Colors.white.withValues(alpha: 0.12),
 =======
                       color: Colors.white.withValues(alpha: 0.06),
                       border: Border.all(
@@ -157,9 +157,9 @@ class _SplashScreenState extends State<SplashScreen>
                   const SizedBox(height: 24),
 
                   // Tech chips
-                  Wrap(
+                  const Wrap(
                     spacing: 8,
-                    children: const [
+                    children: [
                       _TechChip('Precision Feed'),
                       _TechChip('RTC Scheduler'),
                       _TechChip('Calibrated'),
@@ -186,7 +186,7 @@ class _SplashScreenState extends State<SplashScreen>
                     child: LinearProgressIndicator(
                       value: _loadProgress,
 <<<<<<< HEAD
-                      backgroundColor: Colors.white.withOpacity(0.12),
+                      backgroundColor: Colors.white.withValues(alpha: 0.12),
 =======
                       backgroundColor: Colors.white.withValues(alpha: 0.12),
 >>>>>>> main
@@ -221,7 +221,7 @@ class _SplashScreenState extends State<SplashScreen>
       decoration: BoxDecoration(
         shape: BoxShape.circle,
 <<<<<<< HEAD
-        color: AppColors.accent.withOpacity(0.07),
+        color: AppColors.accent.withValues(alpha: 0.07),
 =======
         color: AppColors.accent.withValues(alpha: 0.07),
 >>>>>>> main
@@ -241,7 +241,7 @@ class _TechChip extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       decoration: BoxDecoration(
 <<<<<<< HEAD
-        border: Border.all(color: AppColors.accent.withOpacity(0.35)),
+        border: Border.all(color: AppColors.accent.withValues(alpha: 0.35)),
 =======
         border: Border.all(color: AppColors.accent.withValues(alpha: 0.35)),
 >>>>>>> main

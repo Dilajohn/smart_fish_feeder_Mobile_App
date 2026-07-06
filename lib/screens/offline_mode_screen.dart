@@ -9,7 +9,7 @@ class OfflineModeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pendingEvents = const [
+    const pendingEvents = [
       _PendingEvent(time: '12:00 PM', portion: 'Large', grams: 22),
       _PendingEvent(time: '5:00 PM', portion: 'Small', grams: 8),
       _PendingEvent(time: '7:00 AM', portion: 'Medium', grams: 15),
@@ -20,9 +20,9 @@ class OfflineModeScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFF374151),
         foregroundColor: Colors.white,
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text('FEEDER #001 · POND A',
                 style: TextStyle(color: Colors.white60, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.2)),
             Text('Offline mode',
@@ -75,10 +75,10 @@ class OfflineModeScreen extends StatelessWidget {
 
             const SectionHeader(label: 'RTC status'),
             const SizedBox(height: 8),
-            AppCard(
+            const AppCard(
               padding: EdgeInsets.zero,
               child: Column(
-                children: const [
+                children: [
                   _RtcRow(label: 'RTC clock', value: 'Running', color: AppColors.online),
                   Divider(height: 1),
                   _RtcRow(label: 'Schedule loaded', value: 'Yes', color: AppColors.online),
@@ -100,10 +100,10 @@ class OfflineModeScreen extends StatelessWidget {
 
             const SectionHeader(label: 'Next scheduled feed'),
             const SizedBox(height: 8),
-            AppCard(
+            const AppCard(
               padding: EdgeInsets.zero,
               child: Column(
-                children: const [
+                children: [
                   _RtcRow(label: 'Time', value: '12:00 PM today', isPlain: true),
                   Divider(height: 1),
                   _RtcRow(label: 'Portion', value: 'Large · 22g', isPlain: true),

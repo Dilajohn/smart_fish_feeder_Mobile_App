@@ -22,9 +22,9 @@ class OnboardingScreen extends StatelessWidget {
                   height: 60,
                   decoration: BoxDecoration(
 <<<<<<< HEAD
-                    color: Colors.white.withOpacity(0.08),
+                    color: Colors.white.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(18),
-                    border: Border.all(color: Colors.white.withOpacity(0.14)),
+                    border: Border.all(color: Colors.white.withValues(alpha: 0.14)),
 =======
                     color: Colors.white.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(18),
@@ -133,7 +133,7 @@ class OnboardingScreen extends StatelessWidget {
   Widget _glow(double size) => Container(
         width: size, height: size,
 <<<<<<< HEAD
-        decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.accent.withOpacity(0.06)),
+        decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.accent.withValues(alpha: 0.06)),
 =======
         decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.accent.withValues(alpha: 0.06)),
 >>>>>>> main
@@ -152,9 +152,9 @@ class _FeatureTile extends StatelessWidget {
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
 <<<<<<< HEAD
-        color: Colors.white.withOpacity(0.05),
+        color: Colors.white.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white.withOpacity(0.1)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
 =======
         color: Colors.white.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(14),
@@ -167,7 +167,7 @@ class _FeatureTile extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
 <<<<<<< HEAD
-            decoration: BoxDecoration(color: Colors.white.withOpacity(0.08), borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(10)),
 =======
             decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(10)),
 >>>>>>> main

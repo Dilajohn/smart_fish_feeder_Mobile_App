@@ -42,10 +42,10 @@ class DeviceHealthScreen extends StatelessWidget {
           children: [
             // Firmware update state banner
             if (fw == 'updating')
-              AlertBanner(
+              const AlertBanner(
                 message: 'Flashing firmware specs... 45%',
                 color: AppColors.warning,
-                bgColor: const Color(0xFFFFFBEB),
+                bgColor: Color(0xFFFFFBEB),
                 icon: Icons.sync,
               )
             else if (fw == 'updated')
@@ -60,7 +60,7 @@ class DeviceHealthScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('HARDWARE DIAGNOSTICS', style: AppTextStyles.screenLabel),
+                  const Text('HARDWARE DIAGNOSTICS', style: AppTextStyles.screenLabel),
                   const SizedBox(height: 12),
                   ...device.hardwareStatus.entries.map((e) => Column(
                         children: [
@@ -96,7 +96,7 @@ class DeviceHealthScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('CONNECTIVITY TELEMETRY', style: AppTextStyles.screenLabel),
+                  const Text('CONNECTIVITY TELEMETRY', style: AppTextStyles.screenLabel),
                   const SizedBox(height: 12),
 <<<<<<< HEAD
                   DataRow(
@@ -155,7 +155,7 @@ class DeviceHealthScreen extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: fw == 'updated' ? const Color(0xFF16A34A) : AppColors.primary,
 <<<<<<< HEAD
-                disabledBackgroundColor: AppColors.primary.withOpacity(0.4),
+                disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.4),
 =======
                 disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.4),
 >>>>>>> main

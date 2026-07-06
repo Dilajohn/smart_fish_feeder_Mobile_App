@@ -12,9 +12,9 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.cardBg,
       appBar: AppBar(
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text('ACCOUNT',
                 style: TextStyle(
                     color: AppColors.textLight,
@@ -59,10 +59,10 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 14),
-                Expanded(
+                const Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text('GROUP21',
                           style: TextStyle(
                               fontSize: 16,
@@ -90,10 +90,10 @@ class ProfileScreen extends StatelessWidget {
           // My farms
           const SectionHeader(label: 'My farms'),
           const SizedBox(height: 8),
-          AppCard(
+          const AppCard(
             padding: EdgeInsets.zero,
             child: Column(
-              children: const [
+              children: [
                 _FarmRow(
                     name: 'Pond A · Feeder #001',
                     status: 'Online',
@@ -112,7 +112,7 @@ class ProfileScreen extends StatelessWidget {
           // Account
           const SectionHeader(label: 'Account'),
           const SizedBox(height: 8),
-          AppCard(
+          const AppCard(
             padding: EdgeInsets.zero,
             child: Column(
               children: [
@@ -121,13 +121,13 @@ class ProfileScreen extends StatelessWidget {
                     label: 'Notifications',
                     trailingStatus: 'On',
                     color: AppColors.online),
-                const Divider(height: 1),
-                const _NavRow(
+                Divider(height: 1),
+                _NavRow(
                     icon: Icons.lock_outline,
                     label: 'Change password',
                     chevron: true),
-                const Divider(height: 1),
-                const _NavRow(
+                Divider(height: 1),
+                _NavRow(
                     icon: Icons.person_add_outlined,
                     label: 'Invite team member',
                     chevron: true),
@@ -140,10 +140,10 @@ class ProfileScreen extends StatelessWidget {
           // System
           const SectionHeader(label: 'System'),
           const SizedBox(height: 8),
-          AppCard(
+          const AppCard(
             padding: EdgeInsets.zero,
             child: Column(
-              children: const [
+              children: [
                 _SystemRow(
                     label: 'Backend',
                     value: 'Render · online',

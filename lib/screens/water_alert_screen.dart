@@ -14,9 +14,9 @@ class WaterAlertScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFF7C2D12),
         foregroundColor: Colors.white,
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text('LIVE ALERT — POND A',
                 style: TextStyle(color: Colors.white60, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.2)),
             Text('pH out of range',
@@ -99,10 +99,10 @@ class WaterAlertScreen extends StatelessWidget {
             // Auto-actions
             const SectionHeader(label: 'Auto-actions taken'),
             const SizedBox(height: 8),
-            AppCard(
+            const AppCard(
               padding: EdgeInsets.zero,
               child: Column(
-                children: const [
+                children: [
                   _ActionRow(label: 'Feeding paused', value: 'Yes', color: AppColors.offline),
                   Divider(height: 1),
                   _ActionRow(label: 'Alert sent', value: 'Push + SMS', color: AppColors.online),

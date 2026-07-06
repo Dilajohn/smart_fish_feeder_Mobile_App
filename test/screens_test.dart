@@ -217,7 +217,7 @@ void main() {
   });
 
   test('DeviceInfo.rssiLabel buckets correctly', () {
-    final base = DeviceInfo(
+    const base = DeviceInfo(
       serial: 'X',
       pondName: 'P',
       firmwareVersion: 'v1',

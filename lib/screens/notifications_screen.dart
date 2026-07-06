@@ -8,7 +8,7 @@ class NotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final today = const [
+    const today = [
       _AlertItem(
         color: AppColors.offline,
         title: 'Food level critical',
@@ -29,7 +29,7 @@ class NotificationsScreen extends StatelessWidget {
       ),
     ];
 
-    final yesterday = const [
+    const yesterday = [
       _AlertItem(
         color: AppColors.offline,
         title: 'Device went offline',
@@ -59,9 +59,9 @@ class NotificationsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.cardBg,
       appBar: AppBar(
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text('ALERTS & UPDATES',
                 style: TextStyle(color: AppColors.textLight, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.2)),
             Text('Notifications',

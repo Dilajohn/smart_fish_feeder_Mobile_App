@@ -59,13 +59,13 @@ class SmartFishFeederApp extends StatelessWidget {
   }
 }
 =======
-        '/calibration': (_) => const CalibrationScreen(),
-        '/offline': (_) => const OfflineModeScreen(),
-        '/add-schedule': (_) => const AddScheduleScreen(),
-        '/water-alert': (_) => const WaterAlertScreen(),
-        '/analytics': (_) => const AnalyticsScreen(),
-        '/notifications': (_) => const NotificationsScreen(),
-        '/profile': (_) => const ProfileScreen(),
+        '/calibration': (_) => CalibrationScreen(),
+        '/offline': (_) => OfflineModeScreen(),
+        '/add-schedule': (_) => AddScheduleScreen(),
+        '/water-alert': (_) => WaterAlertScreen(),
+        '/analytics': (_) => AnalyticsScreen(),
+        '/notifications': (_) => NotificationsScreen(),
+        '/profile': (_) => ProfileScreen(),
       },
     );
   }
