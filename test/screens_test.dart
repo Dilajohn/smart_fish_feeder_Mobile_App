@@ -224,8 +224,8 @@ void main() {
       latestFirmware: 'v1',
       wifiRssi: -50,
       pingMs: 100,
-      uptime: const Duration(hours: 1),
-      hardwareStatus: const {},
+      uptime: Duration(hours: 1),
+      hardwareStatus: {},
       firmwareUpdateAvailable: false,
     );
     expect(base.rssiLabel, 'Excellent');
