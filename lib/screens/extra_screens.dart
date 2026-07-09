@@ -111,8 +111,8 @@ class CooldownLockScreen extends StatelessWidget {
 
             const SizedBox(height: 14),
 
-            AppCard(
-              child: const Column(
+            const AppCard(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('COOLDOWN PARAMETERS', style: AppTextStyles.screenLabel),
@@ -320,11 +320,12 @@ class _SyncStatusScreenState extends State<SyncStatusScreen> {
               onPressed: _syncing
                   ? null
                   : () async {
+                      final ctx = context;
                       setState(() => _syncing = true);
                       await Future.delayed(const Duration(seconds: 2));
-                      if (!mounted) return;
+                      if (!mounted || !ctx.mounted) return;
                       setState(() => _syncing = false);
-                      ScaffoldMessenger.of(context).showSnackBar(
+                      ScaffoldMessenger.of(ctx).showSnackBar(
                         const SnackBar(
                             content:
                                 Text('Device states have been hard synced.'),
@@ -402,7 +403,8 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Date range
-                  const Text('SELECT INTERVAL', style: AppTextStyles.screenLabel),
+                  const Text('SELECT INTERVAL',
+                      style: AppTextStyles.screenLabel),
                   const SizedBox(height: 8),
                   const Row(
                     children: [
@@ -417,7 +419,8 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
 
                   const SizedBox(height: 18),
 
-                  const Text('SEGMENTS TO EXPORT', style: AppTextStyles.screenLabel),
+                  const Text('SEGMENTS TO EXPORT',
+                      style: AppTextStyles.screenLabel),
                   const SizedBox(height: 8),
                   AppCard(
                     padding: const EdgeInsets.symmetric(vertical: 4),
@@ -443,7 +446,8 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
 
                   const SizedBox(height: 18),
 
-                  const Text('DISTRIBUTE FORMATS', style: AppTextStyles.screenLabel),
+                  const Text('DISTRIBUTE FORMATS',
+                      style: AppTextStyles.screenLabel),
                   const SizedBox(height: 8),
                   Row(
                     children: ['CSV', 'PDF', 'Excel'].map((f) {
@@ -499,11 +503,12 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
               onPressed: _busy
                   ? null
                   : () async {
+                      final ctx = context;
                       setState(() => _busy = true);
                       await Future.delayed(const Duration(seconds: 2));
-                      if (!mounted) return;
+                      if (!mounted || !ctx.mounted) return;
                       setState(() => _busy = false);
-                      ScaffoldMessenger.of(context).showSnackBar(
+                      ScaffoldMessenger.of(ctx).showSnackBar(
                         SnackBar(
                             content: Text(
                                 'Report compiled as $_format! Check your files folder.'),
