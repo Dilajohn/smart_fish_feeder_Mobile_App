@@ -4,10 +4,13 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+apply plugin: 'dev.flutter.flutter-gradle-plugin'
+
 android {
     namespace "com.group21.smart_fish_feeder"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
+    buildToolsVersion "36.1.0"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -41,4 +44,7 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation 'androidx.annotation:annotation:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+}
