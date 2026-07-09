@@ -320,12 +320,20 @@ class _SyncStatusScreenState extends State<SyncStatusScreen> {
               onPressed: _syncing
                   ? null
                   : () async {
+<<<<<<< HEAD
                       final messenger = ScaffoldMessenger.of(context);
+=======
+                      final ctx = context;
+>>>>>>> 7bc9dc1257ce3faba3440ecab1872660d269d3b5
                       setState(() => _syncing = true);
                       await Future.delayed(const Duration(seconds: 2));
-                      if (!mounted) return;
+                      if (!mounted || !ctx.mounted) return;
                       setState(() => _syncing = false);
+<<<<<<< HEAD
                       messenger.showSnackBar(
+=======
+                      ScaffoldMessenger.of(ctx).showSnackBar(
+>>>>>>> 7bc9dc1257ce3faba3440ecab1872660d269d3b5
                         const SnackBar(
                             content:
                                 Text('Device states have been hard synced.'),
@@ -403,7 +411,8 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Date range
-                  const Text('SELECT INTERVAL', style: AppTextStyles.screenLabel),
+                  const Text('SELECT INTERVAL',
+                      style: AppTextStyles.screenLabel),
                   const SizedBox(height: 8),
                   const Row(
                     children: [
@@ -418,7 +427,8 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
 
                   const SizedBox(height: 18),
 
-                  const Text('SEGMENTS TO EXPORT', style: AppTextStyles.screenLabel),
+                  const Text('SEGMENTS TO EXPORT',
+                      style: AppTextStyles.screenLabel),
                   const SizedBox(height: 8),
                   AppCard(
                     padding: const EdgeInsets.symmetric(vertical: 4),
@@ -444,7 +454,8 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
 
                   const SizedBox(height: 18),
 
-                  const Text('DISTRIBUTE FORMATS', style: AppTextStyles.screenLabel),
+                  const Text('DISTRIBUTE FORMATS',
+                      style: AppTextStyles.screenLabel),
                   const SizedBox(height: 8),
                   Row(
                     children: ['CSV', 'PDF', 'Excel'].map((f) {
@@ -500,12 +511,20 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
               onPressed: _busy
                   ? null
                   : () async {
+<<<<<<< HEAD
                       final messenger = ScaffoldMessenger.of(context);
+=======
+                      final ctx = context;
+>>>>>>> 7bc9dc1257ce3faba3440ecab1872660d269d3b5
                       setState(() => _busy = true);
                       await Future.delayed(const Duration(seconds: 2));
-                      if (!mounted) return;
+                      if (!mounted || !ctx.mounted) return;
                       setState(() => _busy = false);
+<<<<<<< HEAD
                       messenger.showSnackBar(
+=======
+                      ScaffoldMessenger.of(ctx).showSnackBar(
+>>>>>>> 7bc9dc1257ce3faba3440ecab1872660d269d3b5
                         SnackBar(
                             content: Text(
                                 'Report compiled as $_format! Check your files folder.'),
