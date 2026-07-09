@@ -34,6 +34,17 @@ ios/ServiceDefinitions.json
 ios/Runner/GeneratedPluginRegistrant.*
 ios/Pods/
 
+# IDE
+.idea/
+*.iml
+
+# Backup and temp files
+*.backup/
+android.backup/
+test_app/
+tmp_compare.py
+extract_images.py
+
 # Misc
 *.log
 *.env
