@@ -36,8 +36,8 @@ class _RefillPredictionScreenState extends State<RefillPredictionScreen> {
                     color: AppColors.textDark)),
           ],
         ),
-        actions: [
-          const Padding(
+        actions: const [
+          Padding(
             padding: EdgeInsets.only(right: 16),
             child: StatusBadge(
                 label: 'Active',

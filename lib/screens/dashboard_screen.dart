@@ -83,9 +83,9 @@ class DashboardScreen extends StatelessWidget {
                 const SizedBox(height: 8),
 
                 // Quick stats row
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: const Row(
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
                     children: [
                       _StatCard(
                           label: 'Feeds Today',

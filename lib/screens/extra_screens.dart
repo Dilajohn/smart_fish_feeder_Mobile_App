@@ -111,8 +111,8 @@ class CooldownLockScreen extends StatelessWidget {
 
             const SizedBox(height: 14),
 
-            AppCard(
-              child: const Column(
+            const AppCard(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('COOLDOWN PARAMETERS', style: AppTextStyles.screenLabel),
@@ -320,11 +320,12 @@ class _SyncStatusScreenState extends State<SyncStatusScreen> {
               onPressed: _syncing
                   ? null
                   : () async {
+                      final messenger = ScaffoldMessenger.of(context);
                       setState(() => _syncing = true);
                       await Future.delayed(const Duration(seconds: 2));
                       if (!mounted) return;
                       setState(() => _syncing = false);
-                      ScaffoldMessenger.of(context).showSnackBar(
+                      messenger.showSnackBar(
                         const SnackBar(
                             content:
                                 Text('Device states have been hard synced.'),
@@ -499,11 +500,12 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
               onPressed: _busy
                   ? null
                   : () async {
+                      final messenger = ScaffoldMessenger.of(context);
                       setState(() => _busy = true);
                       await Future.delayed(const Duration(seconds: 2));
                       if (!mounted) return;
                       setState(() => _busy = false);
-                      ScaffoldMessenger.of(context).showSnackBar(
+                      messenger.showSnackBar(
                         SnackBar(
                             content: Text(
                                 'Report compiled as $_format! Check your files folder.'),
