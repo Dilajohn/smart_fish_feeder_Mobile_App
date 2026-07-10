@@ -16,6 +16,7 @@ import 'screens/analytics_screen.dart';
 import 'screens/notifications_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/db_settings_screen.dart';
+import 'screens/api_settings_screen.dart';
 
 void main() {
   runApp(
