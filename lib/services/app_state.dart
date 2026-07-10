@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import '../models/models.dart';
 import 'database_service.dart';
+import 'api_service.dart';
 
 class AppState extends ChangeNotifier {
   final DatabaseService dbService = DatabaseService();
-  bool dbOnline = false;
+  final ApiService apiService = ApiService();
+  bool dbOnline = false; // means "connected to a backend" (either PG or API)
+  bool usingPostgres = false;
 
   AppState() {
     initDatabase();
@@ -13,7 +16,11 @@ class AppState extends ChangeNotifier {
   // Asynchronously initialize database connection and load dynamic data
   Future<void> initDatabase() async {
     await dbService.loadSettings();
+    await apiService.loadSettings();
+
+    // If user configured usePostgres, try native Postgres connection first
     if (dbService.usePostgres) {
+      usingPostgres = true;
       final connected = await dbService.connect();
       if (connected) {
         dbOnline = true;
@@ -21,7 +28,11 @@ class AppState extends ChangeNotifier {
         return;
       }
     }
-    dbOnline = false;
+
+    // Fallback to API client (recommended for emulator, web, phone)
+    usingPostgres = false;
+    dbOnline = true; // API assumed available (calls are guarded)
+    await refreshData();
     notifyListeners();
   }
 
@@ -30,35 +41,43 @@ class AppState extends ChangeNotifier {
     if (!dbOnline) return;
 
     try {
-      final dbPonds = await dbService.getPonds();
-      if (dbPonds.isNotEmpty) {
-        _ponds = dbPonds;
-        // Keep hopper level in sync with Pond A
-        final pondA = _ponds.firstWhere((p) => p.name == 'Pond A', orElse: () => _ponds.first);
-        _hopperLevel = pondA.foodPercent;
-      }
+      if (usingPostgres) {
+        final dbPonds = await dbService.getPonds();
+        if (dbPonds.isNotEmpty) {
+          _ponds = dbPonds;
+          final pondA = _ponds.firstWhere((p) => p.name == 'Pond A', orElse: () => _ponds.first);
+          _hopperLevel = pondA.foodPercent;
+        }
 
-      final dbSchedules = await dbService.getSchedules();
-      if (dbSchedules.isNotEmpty) {
-        _schedules = dbSchedules;
-      }
+        final dbSchedules = await dbService.getSchedules();
+        if (dbSchedules.isNotEmpty) _schedules = dbSchedules;
 
-      final dbLogs = await dbService.getFeedLogs();
-      if (dbLogs.isNotEmpty) {
-        _feedLogs = dbLogs;
-      }
+        final dbLogs = await dbService.getFeedLogs();
+        if (dbLogs.isNotEmpty) _feedLogs = dbLogs;
 
-      final dbDevice = await dbService.getDeviceInfo('SFF-001-KLA');
-      if (dbDevice != null) {
-        _deviceInfo = dbDevice;
-      }
+        final dbDevice = await dbService.getDeviceInfo('SFF-001-KLA');
+        if (dbDevice != null) _deviceInfo = dbDevice;
 
-      final dbSync = await dbService.getSyncStatus();
-      if (dbSync != null) {
-        _syncStatus = dbSync;
+        final dbSync = await dbService.getSyncStatus();
+        if (dbSync != null) _syncStatus = dbSync;
+      } else {
+        final apiPonds = await apiService.getPonds();
+        if (apiPonds.isNotEmpty) {
+          _ponds = apiPonds;
+          final pondA = _ponds.firstWhere((p) => p.name == 'Pond A', orElse: () => _ponds.first);
+          _hopperLevel = pondA.foodPercent;
+        }
+
+        final apiSchedules = await apiService.getSchedules();
+        if (apiSchedules.isNotEmpty) _schedules = apiSchedules;
+
+        final apiLogs = await apiService.getFeedLogs();
+        if (apiLogs.isNotEmpty) _feedLogs = apiLogs;
+
+        // Device info and sync status not yet available from API — keep defaults
       }
     } catch (e) {
-      debugPrint('Error refreshing data from PostgreSQL: $e');
+      debugPrint('Error refreshing data from backend: $e');
       dbOnline = false;
     }
     notifyListeners();
@@ -118,7 +137,12 @@ class AppState extends ChangeNotifier {
 
   Future<void> addPond(PondModel pond) async {
     if (dbOnline) {
-      final success = await dbService.addPond(pond);
+      bool success = false;
+      if (usingPostgres) {
+        success = await dbService.addPond(pond);
+      } else {
+        success = await apiService.addPond(pond);
+      }
       if (!success) return;
     }
     _ponds = [..._ponds, pond];
@@ -178,14 +202,25 @@ class AppState extends ChangeNotifier {
     }).toList();
 
     if (dbOnline && newStatus != null) {
-      await dbService.toggleSchedule(id, newStatus!);
+      if (usingPostgres) {
+        await dbService.toggleSchedule(id, newStatus!);
+      } else {
+        // API does not currently expose a toggle endpoint; attempt re-create/update via addSchedule
+        final schedule = _schedules.firstWhere((s) => s.id == id);
+        await apiService.addSchedule(schedule);
+      }
     }
     notifyListeners();
   }
 
   Future<void> addSchedule(FeedSchedule schedule) async {
     if (dbOnline) {
-      final success = await dbService.addSchedule(schedule);
+      bool success = false;
+      if (usingPostgres) {
+        success = await dbService.addSchedule(schedule);
+      } else {
+        success = await apiService.addSchedule(schedule);
+      }
       if (!success) return;
     }
     _schedules = [..._schedules, schedule];
@@ -205,7 +240,11 @@ class AppState extends ChangeNotifier {
 
   Future<void> addFeedLog(FeedLog log) async {
     if (dbOnline) {
-      await dbService.addFeedLog(log);
+      if (usingPostgres) {
+        await dbService.addFeedLog(log);
+      } else {
+        await apiService.addFeedLog(log);
+      }
     }
     _feedLogs = [log, ..._feedLogs];
     notifyListeners();
@@ -258,7 +297,13 @@ class AppState extends ChangeNotifier {
     }).toList();
 
     if (dbOnline) {
-      await dbService.updatePondHopperLevel('Pond A', value);
+      if (usingPostgres) {
+        await dbService.updatePondHopperLevel('Pond A', value);
+      } else {
+        // Find serial for Pond A and send telemetry update
+        final pond = _ponds.firstWhere((p) => p.name == 'Pond A', orElse: () => _ponds.first);
+        await apiService.updatePondHopperLevelBySerial(pond.feederSerial, value);
+      }
     }
     notifyListeners();
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utils/app_theme.dart';
 import '../widgets/shared_widgets.dart';
+import 'api_settings_screen.dart';
 
 /// Profile — matches fish_feeder_extra_screens.html "Profile" checkpoint.
 /// Account, my farms, system info, sign out.
@@ -137,6 +138,12 @@ class ProfileScreen extends StatelessWidget {
                     label: 'Database connection',
                     chevron: true,
                     onTap: () => Navigator.pushNamed(context, '/db-settings')),
+                const Divider(height: 1),
+                _NavRow(
+                    icon: Icons.settings_outlined,
+                    label: 'API settings',
+                    chevron: true,
+                    onTap: () => Navigator.pushNamed(context, '/api-settings')),
               ],
             ),
           ),

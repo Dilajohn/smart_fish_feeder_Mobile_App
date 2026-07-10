@@ -185,6 +185,9 @@ Typography: **Roboto** (system default) — clean and legible on Android
 - [x] CSV/PDF/Excel export UI
 
 ### V2 (Planned)
+- [ ] App settings screen to configure API base URL & token (available in Profile → API settings)
+- [ ] CI workflow for automated tests (GitHub Actions included)
+
 - [ ] Real API integration (Django backend)
 - [ ] Push notifications (FCM) for low-food and offline alerts
 - [ ] Computer Vision feed quality detection (camera + TFLite)

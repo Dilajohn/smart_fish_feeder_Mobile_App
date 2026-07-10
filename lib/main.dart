@@ -53,6 +53,7 @@ class SmartFishFeederApp extends StatelessWidget {
         '/notifications': (_) => const NotificationsScreen(),
         '/profile': (_) => const ProfileScreen(),
         '/db-settings': (_) => const DbSettingsScreen(),
+        '/api-settings': (_) => const ApiSettingsScreen(),
       },
     );
   }
