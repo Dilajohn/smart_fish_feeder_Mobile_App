@@ -102,7 +102,13 @@ class ApiService {
       final res = await http.get(Uri.parse('$_baseUrl$path'), headers: _headers)
           .timeout(const Duration(seconds: 8));
       _isOnline = true;
-      if (res.statusCode == 200) return jsonDecode(res.body) as List<dynamic>;
+      if (res.statusCode == 200) {
+        final decoded = jsonDecode(res.body);
+        if (decoded is List<dynamic>) return decoded;
+        if (decoded is Map<String, dynamic> && decoded['results'] is List<dynamic>) {
+          return decoded['results'] as List<dynamic>;
+        }
+      }
     } catch (e) { debugPrint('GET $path error: $e'); _isOnline = false; }
     return null;
   }
