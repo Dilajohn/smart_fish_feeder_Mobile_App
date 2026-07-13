@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/app_state.dart';
+import '../services/api_service.dart';
 import '../utils/app_theme.dart';
 import '../widgets/shared_widgets.dart';
 import '../models/models.dart';
@@ -82,26 +83,36 @@ class DashboardScreen extends StatelessWidget {
 
                 const SizedBox(height: 8),
 
-                // Quick stats row
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                // Quick stats row — live from state
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
                     children: [
                       _StatCard(
                           label: 'Feeds Today',
-                          value: '2',
+                          value: state.feedLogs
+                              .where((l) {
+                                final now = DateTime.now();
+                                return l.timestamp.year == now.year &&
+                                    l.timestamp.month == now.month &&
+                                    l.timestamp.day == now.day;
+                              })
+                              .length
+                              .toString(),
                           icon: Icons.restaurant_outlined,
                           color: AppColors.primary),
-                      SizedBox(width: 12),
+                      const SizedBox(width: 12),
                       _StatCard(
                           label: 'Food Level',
-                          value: '67%',
+                          value: '${state.hopperLevel.toStringAsFixed(0)}%',
                           icon: Icons.water_drop_outlined,
                           color: AppColors.info),
-                      SizedBox(width: 12),
+                      const SizedBox(width: 12),
                       _StatCard(
                           label: 'Temp',
-                          value: '24°C',
+                          value: state.ponds.isNotEmpty
+                              ? '${state.ponds.first.waterTemp.toStringAsFixed(1)}°C'
+                              : '--°C',
                           icon: Icons.thermostat_outlined,
                           color: AppColors.warning),
                     ],
@@ -127,7 +138,7 @@ class DashboardScreen extends StatelessWidget {
                       const SectionHeader(
                           label: 'Today', title: 'Feed Schedules'),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () => Navigator.pushNamed(context, '/add-schedule'),
                         child: const Text('+ Add',
                             style: TextStyle(
                                 color: AppColors.primary,
@@ -215,21 +226,54 @@ class _ManualFeedCard extends StatefulWidget {
 class _ManualFeedCardState extends State<_ManualFeedCard> {
   bool _feeding = false;
   bool _fed = false;
+  String? _error;
 
-  void _triggerFeed() async {
-    setState(() {
-      _feeding = true;
-      _fed = false;
-    });
-    await Future.delayed(const Duration(seconds: 2));
-    if (mounted) {
+  Future<void> _triggerFeed() async {
+    final state = context.read<AppState>();
+    // Find the first online pond's serial
+    final pond = state.ponds.firstWhere(
+      (p) => p.isOnline,
+      orElse: () => state.ponds.first,
+    );
+    setState(() { _feeding = true; _fed = false; _error = null; });
+
+    // Activate cooldown before sending so UI reflects it
+    state.activateCooldown(30);
+
+    final result = await ApiService.instance.sendManualFeed(
+      pond.feederSerial,
+      portionGrams: 120,
+    );
+
+    if (!mounted) return;
+    if (result != null) {
+      // Log the manual feed event
+      await state.addFeedLog(FeedLog(
+        id: 'log-${DateTime.now().millisecondsSinceEpoch}',
+        pondName: pond.name,
+        timestamp: DateTime.now(),
+        portionGrams: 120,
+        trigger: 'manual',
+        synced: true,
+      ));
+      setState(() { _feeding = false; _fed = true; _error = null; });
+    } else {
+      // Server unreachable — still log locally as unsynced
+      await state.addFeedLog(FeedLog(
+        id: 'log-${DateTime.now().millisecondsSinceEpoch}',
+        pondName: pond.name,
+        timestamp: DateTime.now(),
+        portionGrams: 120,
+        trigger: 'manual',
+        synced: false,
+      ));
       setState(() {
-        _feeding = false;
-        _fed = true;
+        _feeding = false; _fed = true;
+        _error = 'Command queued (device offline — will retry)';
       });
     }
-    await Future.delayed(const Duration(seconds: 3));
-    if (mounted) setState(() => _fed = false);
+    await Future.delayed(const Duration(seconds: 4));
+    if (mounted) setState(() { _fed = false; _error = null; });
   }
 
   @override
@@ -283,6 +327,12 @@ class _ManualFeedCardState extends State<_ManualFeedCard> {
           const Text('Servo runs for 8 seconds · ~120g portion',
               style: TextStyle(color: Colors.white60, fontSize: 11)),
           const SizedBox(height: 14),
+          if (_error != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Text(_error!,
+                  style: const TextStyle(color: AppColors.accent, fontSize: 11, fontWeight: FontWeight.w600)),
+            ),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(

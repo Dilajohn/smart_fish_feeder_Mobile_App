@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/app_state.dart';
+import '../services/api_service.dart';
 import '../utils/app_theme.dart';
 import '../widgets/shared_widgets.dart';
+import 'package:intl/intl.dart';
 
 // ─────────────────────────────────────────────
 // 8. COOLDOWN SAFETY LOCK SCREEN
@@ -320,16 +322,30 @@ class _SyncStatusScreenState extends State<SyncStatusScreen> {
               onPressed: _syncing
                   ? null
                   : () async {
-                      final ctx = context;
+                      final state = context.read<AppState>();
                       setState(() => _syncing = true);
-                      await Future.delayed(const Duration(seconds: 2));
-                      if (!mounted || !ctx.mounted) return;
+                      // Find first online pond's serial
+                      final serial = state.ponds.isNotEmpty
+                          ? state.ponds.firstWhere(
+                                (p) => p.isOnline,
+                                orElse: () => state.ponds.first,
+                              ).feederSerial
+                          : 'SFF-001-KLA';
+                      final result = await ApiService.instance.syncEeprom(serial);
+                      if (!mounted) return;
                       setState(() => _syncing = false);
-                      ScaffoldMessenger.of(ctx).showSnackBar(
-                        const SnackBar(
-                            content:
-                                Text('Device states have been hard synced.'),
-                            backgroundColor: AppColors.primary),
+                      // Refresh sync status from API
+                      await state.refreshSyncStatus();
+                      if (!mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(result != null
+                              ? 'Hardware re-sync command queued for $serial.'
+                              : 'Device unreachable — will retry when online.'),
+                          backgroundColor: result != null
+                              ? AppColors.primary
+                              : AppColors.warning,
+                        ),
                       );
                     },
               icon: _syncing
@@ -369,6 +385,9 @@ class ExportLogScreen extends StatefulWidget {
 class _ExportLogScreenState extends State<ExportLogScreen> {
   String _format = 'CSV';
   bool _busy = false;
+  DateTime _from = DateTime.now().subtract(const Duration(days: 17));
+  DateTime _to   = DateTime.now();
+
   final Map<String, bool> _segments = {
     'Feed Event Logs': true,
     'Telemetry Sensor Readings': true,
@@ -376,6 +395,48 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
     'Firmware Status Reports': false,
     'Unsynced Offline Events': true,
   };
+
+  String get _fromLabel => DateFormat('MMM dd, yyyy').format(_from);
+  String get _toLabel   => DateFormat('MMM dd, yyyy').format(_to);
+
+  Future<void> _pickDate({required bool isFrom}) async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: isFrom ? _from : _to,
+      firstDate: DateTime(2024),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) setState(() => isFrom ? _from = picked : _to = picked);
+  }
+
+  Future<void> _export() async {
+    final state  = context.read<AppState>();
+    final serial = state.ponds.isNotEmpty
+        ? state.ponds.firstWhere((p) => p.isOnline, orElse: () => state.ponds.first).feederSerial
+        : 'SFF-001-KLA';
+
+    setState(() => _busy = true);
+
+    final result = await ApiService.instance.exportLogs(
+      serial: serial,
+      from:   DateFormat('yyyy-MM-dd').format(_from),
+      to:     DateFormat('yyyy-MM-dd').format(_to),
+      format: _format.toLowerCase(),
+    );
+
+    if (!mounted) return;
+    setState(() => _busy = false);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(result != null
+            ? result['message'] as String? ??
+                'Export queued as $_format! Download link sent to your email.'
+            : 'Server unreachable — export will be processed when back online.'),
+        backgroundColor: result != null ? AppColors.primary : AppColors.warning,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -402,18 +463,24 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Date range
-                  const Text('SELECT INTERVAL',
-                      style: AppTextStyles.screenLabel),
+                  // Date range — tappable, real date pickers
+                  const Text('SELECT INTERVAL', style: AppTextStyles.screenLabel),
                   const SizedBox(height: 8),
-                  const Row(
+                  Row(
                     children: [
                       Expanded(
-                          child:
-                              _DateBox(label: 'From', value: 'Jun 01, 2026')),
-                      SizedBox(width: 12),
+                        child: GestureDetector(
+                          onTap: () => _pickDate(isFrom: true),
+                          child: _DateBox(label: 'From', value: _fromLabel),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
                       Expanded(
-                          child: _DateBox(label: 'To', value: 'Jun 18, 2026')),
+                        child: GestureDetector(
+                          onTap: () => _pickDate(isFrom: false),
+                          child: _DateBox(label: 'To', value: _toLabel),
+                        ),
+                      ),
                     ],
                   ),
 
@@ -489,7 +556,7 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
                   const SizedBox(height: 14),
 
                   AlertBanner.info(
-                      'Export includes 18 days · 378 logs · ~42 KB size threshold'),
+                      'Date range: $_fromLabel → $_toLabel  ·  Format: $_format'),
 
                   const SizedBox(height: 8),
                 ],
@@ -500,30 +567,14 @@ class _ExportLogScreenState extends State<ExportLogScreen> {
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
             color: Colors.white,
             child: ElevatedButton.icon(
-              onPressed: _busy
-                  ? null
-                  : () async {
-                      final ctx = context;
-                      setState(() => _busy = true);
-                      await Future.delayed(const Duration(seconds: 2));
-                      if (!mounted || !ctx.mounted) return;
-                      setState(() => _busy = false);
-                      ScaffoldMessenger.of(ctx).showSnackBar(
-                        SnackBar(
-                            content: Text(
-                                'Report compiled as $_format! Check your files folder.'),
-                            backgroundColor: AppColors.primary),
-                      );
-                    },
+              onPressed: _busy ? null : _export,
               icon: _busy
                   ? const SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: CircularProgressIndicator(
-                          strokeWidth: 2, color: Colors.white))
+                      width: 18, height: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
                   : const Icon(Icons.download_outlined, size: 18),
               label: Text(_busy
-                  ? 'Compiling export sheets...'
+                  ? 'Compiling export...'
                   : 'Compile & Export Log as $_format'),
             ),
           ),

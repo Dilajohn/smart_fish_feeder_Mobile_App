@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../services/app_state.dart';
+import '../services/api_service.dart';
 import '../utils/app_theme.dart';
 import '../widgets/shared_widgets.dart';
-import 'api_settings_screen.dart';
 
 /// Profile — matches fish_feeder_extra_screens.html "Profile" checkpoint.
 /// Account, my farms, system info, sign out.
@@ -10,6 +12,9 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<AppState>();
+    final api   = ApiService.instance;
+
     return Scaffold(
       backgroundColor: AppColors.cardBg,
       appBar: AppBar(
@@ -17,23 +22,16 @@ class ProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('ACCOUNT',
-                style: TextStyle(
-                    color: AppColors.textLight,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.2)),
+                style: TextStyle(color: AppColors.textLight, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.2)),
             Text('My profile',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w900,
-                    color: AppColors.textDark)),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppColors.textDark)),
           ],
         ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // Profile header card
+          // Profile header — live email from ApiService token
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
@@ -44,40 +42,32 @@ class ProfileScreen extends StatelessWidget {
             child: Row(
               children: [
                 Container(
-                  width: 56,
-                  height: 56,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFDCFCE7),
-                    shape: BoxShape.circle,
-                  ),
+                  width: 56, height: 56,
+                  decoration: const BoxDecoration(color: Color(0xFFDCFCE7), shape: BoxShape.circle),
                   child: const Center(
-                    child: Text('OK',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.primary,
-                        )),
+                    child: Text('SFF', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppColors.primary)),
                   ),
                 ),
                 const SizedBox(width: 14),
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('GROUP21',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.textDark)),
-                      SizedBox(height: 2),
-                      Text('farmer@pondA.ug',
-                          style: TextStyle(
-                              fontSize: 12, color: AppColors.textMedium)),
-                      SizedBox(height: 6),
+                      const Text('Smart Fish Feeder',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppColors.textDark)),
+                      const SizedBox(height: 2),
+                      Text(
+                        api.isOnline ? 'Backend connected' : 'Offline mode',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: api.isOnline ? AppColors.online : AppColors.warning,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
                       StatusBadge(
                         label: 'Farm operator',
                         color: AppColors.primary,
-                        bgColor: Color(0xFFDCFCE7),
+                        bgColor: const Color(0xFFDCFCE7),
                       ),
                     ],
                   ),
@@ -88,50 +78,63 @@ class ProfileScreen extends StatelessWidget {
 
           const SizedBox(height: 18),
 
-          // My farms
+          // My farms — live from state
           const SectionHeader(label: 'My farms'),
           const SizedBox(height: 8),
-          const AppCard(
+          AppCard(
             padding: EdgeInsets.zero,
             child: Column(
-              children: [
-                _FarmRow(
-                    name: 'Pond A · Feeder #001',
-                    status: 'Online',
-                    color: AppColors.online),
-                Divider(height: 1),
-                _FarmRow(
-                    name: 'Pond B · Feeder #002',
-                    status: 'Offline',
-                    color: AppColors.offline),
-              ],
+              children: state.ponds.asMap().entries.map((entry) {
+                final i    = entry.key;
+                final pond = entry.value;
+                return Column(
+                  children: [
+                    if (i > 0) const Divider(height: 1),
+                    _FarmRow(
+                      name:   '${pond.name} · ${pond.feederSerial}',
+                      status: pond.isOnline ? 'Online' : 'Offline',
+                      color:  pond.isOnline ? AppColors.online : AppColors.offline,
+                    ),
+                  ],
+                );
+              }).toList(),
             ),
           ),
 
           const SizedBox(height: 18),
 
-          // Account
+          // Account settings
           const SectionHeader(label: 'Account'),
           const SizedBox(height: 8),
           AppCard(
             padding: EdgeInsets.zero,
             child: Column(
               children: [
-                const _NavRow(
+                _NavRow(
                     icon: Icons.notifications_outlined,
                     label: 'Notifications',
                     trailingStatus: 'On',
-                    color: AppColors.online),
+                    color: AppColors.online,
+                    onTap: () => Navigator.pushNamed(context, '/notifications')),
                 const Divider(height: 1),
-                const _NavRow(
+                _NavRow(
                     icon: Icons.lock_outline,
                     label: 'Change password',
-                    chevron: true),
+                    chevron: true,
+                    onTap: () => Navigator.pushNamed(context, '/forgot-password')),
                 const Divider(height: 1),
-                const _NavRow(
+                _NavRow(
                     icon: Icons.person_add_outlined,
                     label: 'Invite team member',
-                    chevron: true),
+                    chevron: true,
+                    onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Team invite link copied to clipboard.'),
+                          backgroundColor: AppColors.info,
+                        ),
+                      );
+                    }),
                 const Divider(height: 1),
                 _NavRow(
                     icon: Icons.dns_outlined,
@@ -150,54 +153,50 @@ class ProfileScreen extends StatelessWidget {
 
           const SizedBox(height: 18),
 
-          // System
+          // System — live backend status
           const SectionHeader(label: 'System'),
           const SizedBox(height: 8),
-          const AppCard(
+          AppCard(
             padding: EdgeInsets.zero,
             child: Column(
               children: [
                 _SystemRow(
                     label: 'Backend',
-                    value: 'Render · online',
-                    color: AppColors.online),
-                Divider(height: 1),
+                    value: state.dbOnline ? 'Online' : 'Offline',
+                    color: state.dbOnline ? AppColors.online : AppColors.offline),
+                const Divider(height: 1),
                 _SystemRow(
-                    label: 'Database',
-                    value: 'Neon PostgreSQL',
+                    label: 'Connection mode',
+                    value: state.usingPostgres ? 'PostgreSQL direct' : 'REST API',
                     color: AppColors.textMedium),
-                Divider(height: 1),
-                _SystemRow(
-                    label: 'App version',
-                    value: 'v1.0.0',
-                    color: AppColors.textMedium),
+                const Divider(height: 1),
+                const _SystemRow(label: 'App version', value: 'v1.0.0', color: AppColors.textMedium),
               ],
             ),
           ),
 
           const SizedBox(height: 18),
 
-          // Sign out button (red outline)
+          // Sign out
           OutlinedButton.icon(
             onPressed: () {
               showDialog(
                 context: context,
                 builder: (_) => AlertDialog(
                   title: const Text('Sign out?'),
-                  content: const Text(
-                      'You will need to log in again to control your feeders.'),
+                  content: const Text('You will need to log in again to control your feeders.'),
                   actions: [
                     TextButton(
                         onPressed: () => Navigator.pop(context),
                         child: const Text('Cancel')),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        await ApiService.instance.logout();
+                        if (!context.mounted) return;
                         Navigator.pop(context);
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, '/login', (_) => false);
+                        Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
                       },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.offline),
+                      style: ElevatedButton.styleFrom(backgroundColor: AppColors.offline),
                       child: const Text('Sign out'),
                     ),
                   ],
@@ -210,8 +209,7 @@ class ProfileScreen extends StatelessWidget {
               minimumSize: const Size(double.infinity, 50),
               foregroundColor: AppColors.offline,
               side: const BorderSide(color: AppColors.offline, width: 1.5),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
           ),
 

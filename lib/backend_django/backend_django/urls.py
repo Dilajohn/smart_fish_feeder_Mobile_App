@@ -1,14 +1,20 @@
-﻿from django.contrib import admin
+﻿"""
+Smart Fish Feeder — Master URL Configuration
+All API routes live under /api/v1/
+"""
+from django.contrib import admin
 from django.urls import path, include
-from django.http import JsonResponse
-from rest_framework.schemas import get_schema_view
-from rest_framework.authtoken.views import obtain_auth_token
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerUIView, SpectacularRedocView
 
 urlpatterns = [
+    # Admin
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
-    path('health/', lambda request: JsonResponse({'status': 'ok'})),
-    path('api/schema/', get_schema_view(title='Smart Fish Feeder API')),
-    path('api-token-auth/', obtain_auth_token),
-    path('api-auth/', include('rest_framework.urls')),
+
+    # API v1 — all endpoints
+    path('api/v1/', include('api.urls')),
+
+    # OpenAPI schema + Swagger UI + Redoc
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/',   SpectacularSwaggerUIView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/redoc/',  SpectacularRedocView.as_view(url_name='schema'),     name='redoc'),
 ]

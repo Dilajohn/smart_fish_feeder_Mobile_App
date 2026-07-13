@@ -1,10 +1,6 @@
-// ============================================================
-// Smart Fish Feeder — Data Models
-// Uganda Tilapia Aquaculture Platform
-// ============================================================
-
 import 'package:flutter/material.dart';
 
+// ── Pond ──────────────────────────────────────────────────────
 class PondModel {
   final int id;
   final String name;
@@ -16,37 +12,28 @@ class PondModel {
   final DateTime lastSeen;
 
   const PondModel({
-    required this.id,
-    required this.name,
-    required this.feederSerial,
-    required this.foodPercent,
-    required this.nextFeedTime,
-    required this.waterTemp,
-    required this.isOnline,
-    required this.lastSeen,
+    required this.id, required this.name, required this.feederSerial,
+    required this.foodPercent, required this.nextFeedTime,
+    required this.waterTemp, required this.isOnline, required this.lastSeen,
   });
 
   bool get isFoodLow => foodPercent < 25.0;
 
   PondModel copyWith({
-    double? foodPercent,
-    String? nextFeedTime,
-    double? waterTemp,
-    bool? isOnline,
-  }) {
-    return PondModel(
-      id: id,
-      name: name,
-      feederSerial: feederSerial,
-      foodPercent: foodPercent ?? this.foodPercent,
-      nextFeedTime: nextFeedTime ?? this.nextFeedTime,
-      waterTemp: waterTemp ?? this.waterTemp,
-      isOnline: isOnline ?? this.isOnline,
-      lastSeen: lastSeen,
-    );
-  }
+    int? id, String? name, String? feederSerial, double? foodPercent,
+    String? nextFeedTime, double? waterTemp, bool? isOnline, DateTime? lastSeen,
+  }) => PondModel(
+    id: id ?? this.id, name: name ?? this.name,
+    feederSerial: feederSerial ?? this.feederSerial,
+    foodPercent: foodPercent ?? this.foodPercent,
+    nextFeedTime: nextFeedTime ?? this.nextFeedTime,
+    waterTemp: waterTemp ?? this.waterTemp,
+    isOnline: isOnline ?? this.isOnline,
+    lastSeen: lastSeen ?? this.lastSeen,
+  );
 }
 
+// ── Schedule ──────────────────────────────────────────────────
 class FeedSchedule {
   final String id;
   final String pondName;
@@ -54,54 +41,43 @@ class FeedSchedule {
   final int durationSeconds;
   final double portionGrams;
   final bool isEnabled;
-  final List<bool> weekdays; // [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
+  final List<bool> weekdays;
 
   const FeedSchedule({
-    required this.id,
-    required this.pondName,
-    required this.time,
-    required this.durationSeconds,
-    required this.portionGrams,
-    required this.isEnabled,
-    required this.weekdays,
+    required this.id, required this.pondName, required this.time,
+    required this.durationSeconds, required this.portionGrams,
+    required this.isEnabled, required this.weekdays,
   });
 
   String get timeLabel {
-    final m = time.minute.toString().padLeft(2, '0');
+    final h = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
     final period = time.period == DayPeriod.am ? 'AM' : 'PM';
-    final h12 = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
-    return '$h12:$m $period';
+    return '$h:${time.minute.toString().padLeft(2, '0')} $period';
   }
 
   FeedSchedule copyWith({bool? isEnabled}) => FeedSchedule(
-        id: id,
-        pondName: pondName,
-        time: time,
-        durationSeconds: durationSeconds,
-        portionGrams: portionGrams,
-        isEnabled: isEnabled ?? this.isEnabled,
-        weekdays: weekdays,
-      );
+    id: id, pondName: pondName, time: time,
+    durationSeconds: durationSeconds, portionGrams: portionGrams,
+    isEnabled: isEnabled ?? this.isEnabled, weekdays: weekdays,
+  );
 }
 
+// ── Feed Log ──────────────────────────────────────────────────
 class FeedLog {
   final String id;
   final String pondName;
   final DateTime timestamp;
   final double portionGrams;
-  final String trigger; // 'scheduled' | 'manual'
+  final String trigger;
   final bool synced;
 
   const FeedLog({
-    required this.id,
-    required this.pondName,
-    required this.timestamp,
-    required this.portionGrams,
-    required this.trigger,
-    required this.synced,
+    required this.id, required this.pondName, required this.timestamp,
+    required this.portionGrams, required this.trigger, required this.synced,
   });
 }
 
+// ── Device Info ───────────────────────────────────────────────
 class DeviceInfo {
   final String serial;
   final String pondName;
@@ -114,15 +90,10 @@ class DeviceInfo {
   final bool firmwareUpdateAvailable;
 
   const DeviceInfo({
-    required this.serial,
-    required this.pondName,
-    required this.firmwareVersion,
-    required this.latestFirmware,
-    required this.wifiRssi,
-    required this.pingMs,
-    required this.uptime,
-    required this.hardwareStatus,
-    required this.firmwareUpdateAvailable,
+    required this.serial, required this.pondName,
+    required this.firmwareVersion, required this.latestFirmware,
+    required this.wifiRssi, required this.pingMs, required this.uptime,
+    required this.hardwareStatus, required this.firmwareUpdateAvailable,
   });
 
   String get rssiLabel {
@@ -140,6 +111,7 @@ class DeviceInfo {
   }
 }
 
+// ── Sync Status ───────────────────────────────────────────────
 class SyncStatusModel {
   final int pendingUploads;
   final int failedRetries;
@@ -150,14 +122,12 @@ class SyncStatusModel {
   final int eepromTotalBytes;
 
   const SyncStatusModel({
-    required this.pendingUploads,
-    required this.failedRetries,
-    required this.recoveredEvents,
-    required this.lastSyncTime,
-    required this.eepromHealthy,
-    required this.eepromUsedBytes,
+    required this.pendingUploads, required this.failedRetries,
+    required this.recoveredEvents, required this.lastSyncTime,
+    required this.eepromHealthy, required this.eepromUsedBytes,
     required this.eepromTotalBytes,
   });
 
-  double get eepromFillPercent => eepromUsedBytes / eepromTotalBytes;
+  double get eepromFillPercent =>
+      eepromTotalBytes == 0 ? 0 : eepromUsedBytes / eepromTotalBytes;
 }

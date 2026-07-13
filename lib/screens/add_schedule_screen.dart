@@ -16,6 +16,7 @@ class AddScheduleScreen extends StatefulWidget {
 class _AddScheduleScreenState extends State<AddScheduleScreen> {
   TimeOfDay _time = const TimeOfDay(hour: 7, minute: 0);
   String _portion = 'Medium'; // Small / Medium / Large
+  String _selectedPond = 'Pond A';
   bool _enableImmediately = true;
   bool _syncNow = true;
   // 0=Mon, 1=Tue ... 6=Sun
@@ -35,31 +36,38 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
     if (picked != null) setState(() => _time = picked);
   }
 
-  void _save() async {
+  Future<void> _save() async {
     setState(() => _saving = true);
-    await Future.delayed(const Duration(milliseconds: 900));
+
+    final grams     = _portions[_portion]!['grams'] as int;
+    final state     = context.read<AppState>();
+    final schedule  = FeedSchedule(
+      id:              'sch-${DateTime.now().millisecondsSinceEpoch}',
+      pondName:        _selectedPond,
+      time:            _time,
+      durationSeconds: (grams / 1.5).round(),
+      portionGrams:    grams.toDouble(),
+      isEnabled:       _enableImmediately,
+      weekdays:        List.of(_days),
+    );
+
+    // Persist to backend (AppState.addSchedule calls ApiService.createSchedule)
+    await state.addSchedule(schedule);
+
     if (!mounted) return;
+    setState(() => _saving = false);
 
-    final grams = _portions[_portion]!['grams'] as int;
-    context.read<AppState>().addSchedule(FeedSchedule(
-          id: 'sch-${DateTime.now().millisecondsSinceEpoch}',
-          pondName: 'Pond A',
-          time: _time,
-          durationSeconds: (grams / 1.5).round(),
-          portionGrams: grams.toDouble(),
-          isEnabled: _enableImmediately,
-          weekdays: List.of(_days),
-        ));
-
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Schedule saved${_syncNow ? ' & synced to device' : ''}'),
-          backgroundColor: AppColors.online,
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          state.dbOnline
+              ? 'Schedule saved${_syncNow ? ' & synced to device' : ''}.'
+              : 'Schedule saved locally (server offline — will sync when reconnected).',
         ),
-      );
-      Navigator.pop(context);
-    }
+        backgroundColor: state.dbOnline ? AppColors.online : AppColors.warning,
+      ),
+    );
+    Navigator.pop(context);
   }
 
   String get _timeLabel {
@@ -89,9 +97,26 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Pond selector (read-only here, demo)
-            const Text('Pond A · Feeder #001',
-                style: TextStyle(color: AppColors.textMedium, fontSize: 13, fontWeight: FontWeight.w600)),
+            // Pond selector — live from state
+            Consumer<AppState>(
+              builder: (context, state, _) {
+                final pondNames = state.ponds.map((p) => p.name).toList();
+                if (!pondNames.contains(_selectedPond) && pondNames.isNotEmpty) {
+                  _selectedPond = pondNames.first;
+                }
+                return DropdownButtonFormField<String>(
+                  value: _selectedPond,
+                  decoration: const InputDecoration(
+                    labelText: 'Select Pond',
+                    prefixIcon: Icon(Icons.water_outlined),
+                  ),
+                  items: pondNames
+                      .map((n) => DropdownMenuItem(value: n, child: Text(n)))
+                      .toList(),
+                  onChanged: (v) { if (v != null) setState(() => _selectedPond = v); },
+                );
+              },
+            ),
             const SizedBox(height: 16),
 
             // Time

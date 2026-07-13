@@ -1,190 +1,207 @@
+// ============================================================
+// Smart Fish Feeder — Django REST API Service
+// Handles all HTTP communication with the backend.
+// Falls back gracefully when server is unreachable.
+// ============================================================
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/models.dart';
-import 'package:flutter/material.dart';
 
 class ApiService {
-  static const String _keyBase = 'api_base_url';
-  static const String _keyToken = 'api_token';
+  ApiService._internal();
+  static final ApiService instance = ApiService._internal();
 
-  String baseUrl = 'http://127.0.0.1:8001'; // default to local Django backend for web/dev
-  String? token; // device/app token (loaded from SharedPreferences via loadSettings)
+  // ── Base URL (override in Settings) ──────────────────────
+  static const String _defaultBase = 'http://10.0.2.2:8000/api/v1';
+  String _baseUrl = _defaultBase;
+  String? _token;
+  bool _isOnline = false;
 
-  Map<String, String> _defaultHeaders() {
-    final headers = <String, String>{'Content-Type': 'application/json'};
-    if (token != null && token!.isNotEmpty) {
-      headers['Authorization'] = 'Token $token';
-    }
-    return headers;
-  }
+  String  get baseUrl => _baseUrl;
+  bool    get isOnline => _isOnline;
+  String? get token    => _token;
 
-  Future<void> loadSettings() async {
+  Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
-    baseUrl = prefs.getString(_keyBase) ?? baseUrl;
-    token = prefs.getString(_keyToken) ?? token;
+    _baseUrl = prefs.getString('api_base_url') ?? _defaultBase;
+    _token   = prefs.getString('auth_token');
   }
 
+  Future<void> setBaseUrl(String url) async {
+    _baseUrl = url;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('api_base_url', url);
+  }
+
+  /// Called by ApiSettingsScreen to persist both URL and token at once.
   Future<void> saveSettings({required String base, String? apiToken}) async {
+    _baseUrl = base;
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_keyBase, base);
-    if (apiToken != null) await prefs.setString(_keyToken, apiToken);
-    baseUrl = base;
-    token = apiToken ?? token;
+    await prefs.setString('api_base_url', base);
+    if (apiToken != null && apiToken.isNotEmpty) {
+      _token = apiToken;
+      await prefs.setString('auth_token', apiToken);
+    }
   }
 
-  Uri _uri(String path) => Uri.parse(baseUrl + path);
+  Map<String, String> get _headers => {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    if (_token != null) 'Authorization': 'Token $_token',
+  };
 
-  Future<List<PondModel>> getPonds() async {
+  // ── Auth ───────────────────────────────────────────────────
+  Future<bool> login({required String email, required String password}) async {
     try {
-      final r = await http.get(_uri('/api/ponds/'), headers: _defaultHeaders()).timeout(Duration(seconds: 5));
-      if (r.statusCode != 200) return [];
-      final data = jsonDecode(r.body) as List<dynamic>;
-      final List<PondModel> ponds = [];
-      for (var i = 0; i < data.length; i++) {
-        final item = data[i] as Map<String, dynamic>;
-        final hopper = (item['hopper_percent'] ?? item['food_percent'] ?? 0).toDouble();
-        ponds.add(PondModel(
-          id: i + 1,
-          name: item['name']?.toString() ?? 'Pond ${i + 1}',
-          feederSerial: item['serial']?.toString() ?? item['feeder_serial']?.toString() ?? 'unknown',
-          foodPercent: hopper,
-          nextFeedTime: item['next_feed_time']?.toString() ?? 'Offline',
-          waterTemp: (item['water_temp'] ?? 0).toDouble(),
-          isOnline: true,
-          lastSeen: DateTime.now(),
-        ));
+      final res = await http.post(
+        Uri.parse('$_baseUrl/auth/login/'),
+        headers: _headers,
+        body: jsonEncode({'email': email, 'password': password}),
+      ).timeout(const Duration(seconds: 8));
+      if (res.statusCode == 200) {
+        final data = jsonDecode(res.body) as Map<String, dynamic>;
+        _token = data['token'] as String?;
+        _isOnline = true;
+        final prefs = await SharedPreferences.getInstance();
+        if (_token != null) await prefs.setString('auth_token', _token!);
+        return true;
       }
-      return ponds;
+      return false;
     } catch (e) {
-      debugPrint('ApiService getPonds error: $e');
-      return [];
+      debugPrint('API login error: $e');
+      _isOnline = false;
+      return false;
     }
   }
 
-  Future<List<FeedSchedule>> getSchedules() async {
+  Future<void> logout() async {
     try {
-      final r = await http.get(_uri('/api/schedules/'), headers: _defaultHeaders()).timeout(Duration(seconds: 5));
-      if (r.statusCode != 200) return [];
-      final data = jsonDecode(r.body) as List<dynamic>;
-      final List<FeedSchedule> schedules = [];
-      for (final item in data) {
-        final m = item as Map<String, dynamic>;
-        // Expect time like '08:00' or '08:00:00'
-        String timeStr = (m['time'] ?? '00:00').toString();
-        final parts = timeStr.split(':');
-        final hour = int.tryParse(parts[0]) ?? 0;
-        final minute = int.tryParse(parts.length > 1 ? parts[1] : '0') ?? 0;
-        schedules.add(FeedSchedule(
-          id: m['id']?.toString() ?? UniqueKey().toString(),
-          pondName: m['pond']?.toString() ?? m['pond_id']?.toString() ?? 'Unknown',
-          time: TimeOfDay(hour: hour, minute: minute),
-          durationSeconds: m['duration_seconds'] ?? 0,
-          portionGrams: (m['amount_grams'] ?? m['portion_grams'] ?? 0).toDouble(),
-          isEnabled: m['is_enabled'] ?? true,
-          weekdays: List.filled(7, true),
-        ));
+      await http.post(Uri.parse('$_baseUrl/auth/logout/'), headers: _headers)
+          .timeout(const Duration(seconds: 5));
+    } catch (_) {}
+    _token = null;
+    _isOnline = false;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('auth_token');
+  }
+
+  // ── Generic helpers ────────────────────────────────────────
+  Future<Map<String, dynamic>?> _get(String path) async {
+    try {
+      final res = await http.get(Uri.parse('$_baseUrl$path'), headers: _headers)
+          .timeout(const Duration(seconds: 8));
+      _isOnline = true;
+      if (res.statusCode == 200) return jsonDecode(res.body) as Map<String, dynamic>;
+    } catch (e) { debugPrint('GET $path error: $e'); _isOnline = false; }
+    return null;
+  }
+
+  Future<List<dynamic>?> _getList(String path) async {
+    try {
+      final res = await http.get(Uri.parse('$_baseUrl$path'), headers: _headers)
+          .timeout(const Duration(seconds: 8));
+      _isOnline = true;
+      if (res.statusCode == 200) return jsonDecode(res.body) as List<dynamic>;
+    } catch (e) { debugPrint('GET $path error: $e'); _isOnline = false; }
+    return null;
+  }
+
+  Future<Map<String, dynamic>?> _post(String path, Map<String, dynamic> body) async {
+    try {
+      final res = await http.post(
+        Uri.parse('$_baseUrl$path'), headers: _headers, body: jsonEncode(body),
+      ).timeout(const Duration(seconds: 8));
+      _isOnline = true;
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        if (res.body.isEmpty) return {};
+        return jsonDecode(res.body) as Map<String, dynamic>;
       }
-      return schedules;
-    } catch (e) {
-      debugPrint('ApiService getSchedules error: $e');
-      return [];
-    }
+    } catch (e) { debugPrint('POST $path error: $e'); _isOnline = false; }
+    return null;
   }
 
-  Future<List<FeedLog>> getFeedLogs() async {
+  Future<Map<String, dynamic>?> _patch(String path, Map<String, dynamic> body) async {
     try {
-      final r = await http.get(_uri('/api/feed-logs/'), headers: _defaultHeaders()).timeout(Duration(seconds: 5));
-      if (r.statusCode != 200) return [];
-      final data = jsonDecode(r.body) as List<dynamic>;
-      final List<FeedLog> logs = [];
-      for (final item in data) {
-        final m = item as Map<String, dynamic>;
-        logs.add(FeedLog(
-          id: m['id']?.toString() ?? UniqueKey().toString(),
-          pondName: m['pond']?.toString() ?? m['pond_name']?.toString() ?? 'Unknown',
-          timestamp: DateTime.parse(m['timestamp'] ?? DateTime.now().toIso8601String()),
-          portionGrams: (m['amount_grams'] ?? m['portion_grams'] ?? 0).toDouble(),
-          trigger: 'manual',
-          synced: true,
-        ));
+      final res = await http.patch(
+        Uri.parse('$_baseUrl$path'), headers: _headers, body: jsonEncode(body),
+      ).timeout(const Duration(seconds: 8));
+      _isOnline = true;
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        if (res.body.isEmpty) return {};
+        return jsonDecode(res.body) as Map<String, dynamic>;
       }
-      return logs;
-    } catch (e) {
-      debugPrint('ApiService getFeedLogs error: $e');
-      return [];
-    }
+    } catch (e) { debugPrint('PATCH $path error: $e'); _isOnline = false; }
+    return null;
   }
 
-  Future<bool> addPond(PondModel pond) async {
+  Future<bool> _delete(String path) async {
     try {
-      final body = jsonEncode({
-        'id': pond.name.toLowerCase().replaceAll(' ', '_'),
-        'name': pond.name,
-        'serial': pond.feederSerial,
-        'hopper_percent': pond.foodPercent,
-      });
-      final r = await http.post(_uri('/api/ponds/'), headers: _defaultHeaders(), body: body).timeout(Duration(seconds: 5));
-      return r.statusCode == 201 || r.statusCode == 200;
-    } catch (e) {
-      debugPrint('ApiService addPond error: $e');
-      return false;
-    }
+      final res = await http.delete(Uri.parse('$_baseUrl$path'), headers: _headers)
+          .timeout(const Duration(seconds: 8));
+      _isOnline = true;
+      return res.statusCode == 204;
+    } catch (e) { debugPrint('DELETE $path error: $e'); _isOnline = false; return false; }
   }
 
-  Future<bool> addSchedule(FeedSchedule schedule) async {
+  // ── Ping / health check ────────────────────────────────────
+  Future<bool> ping() async {
     try {
-      final body = jsonEncode({
-        'id': schedule.id,
-        'pond': schedule.pondName,
-        'time': '${schedule.time.hour.toString().padLeft(2,'0')}:${schedule.time.minute.toString().padLeft(2,'0')}',
-        'amount_grams': schedule.portionGrams,
-        'is_enabled': schedule.isEnabled,
-      });
-      final r = await http.post(_uri('/api/schedules/'), headers: _defaultHeaders(), body: body).timeout(Duration(seconds: 5));
-      return r.statusCode == 201 || r.statusCode == 200;
-    } catch (e) {
-      debugPrint('ApiService addSchedule error: $e');
-      return false;
-    }
+      final res = await http.get(Uri.parse('$_baseUrl/health/'), headers: _headers)
+          .timeout(const Duration(seconds: 4));
+      _isOnline = res.statusCode == 200;
+      return _isOnline;
+    } catch (_) { _isOnline = false; return false; }
   }
 
-  Future<bool> addFeedLog(FeedLog log) async {
-    try {
-      final body = jsonEncode({
-        'id': log.id,
-        'pond': log.pondName,
-        'serial': '',
-        'amount_grams': log.portionGrams,
-        'timestamp': log.timestamp.toIso8601String(),
-      });
-      final r = await http.post(_uri('/api/feed-logs/'), headers: _defaultHeaders(), body: body).timeout(Duration(seconds: 5));
-      return r.statusCode == 201 || r.statusCode == 200;
-    } catch (e) {
-      debugPrint('ApiService addFeedLog error: $e');
-      return false;
-    }
-  }
+  // ── Ponds ──────────────────────────────────────────────────
+  Future<List<dynamic>?> getPonds() => _getList('/ponds/');
+  Future<Map<String, dynamic>?> createPond(Map<String, dynamic> data) => _post('/ponds/', data);
+  Future<Map<String, dynamic>?> updatePond(int id, Map<String, dynamic> data) => _patch('/ponds/$id/', data);
 
-  Future<bool> updatePondHopperLevelBySerial(String serial, double level) async {
-    try {
-      final body = jsonEncode({'serial': serial, 'hopper_percent': level});
-      final r = await http.post(_uri('/api/telemetry/'), headers: _defaultHeaders(), body: body).timeout(Duration(seconds: 5));
-      return r.statusCode == 200 || r.statusCode == 201;
-    } catch (e) {
-      debugPrint('ApiService updatePondHopperLevel error: $e');
-      return false;
-    }
-  }
+  // ── Schedules ──────────────────────────────────────────────
+  Future<List<dynamic>?> getSchedules({String? pondName}) =>
+    _getList('/schedules/${pondName != null ? "?pond=$pondName" : ""}');
+  Future<Map<String, dynamic>?> createSchedule(Map<String, dynamic> data) => _post('/schedules/', data);
+  Future<Map<String, dynamic>?> toggleSchedule(String id, bool enabled) =>
+    _patch('/schedules/$id/', {'is_enabled': enabled});
+  Future<bool> deleteSchedule(String id) => _delete('/schedules/$id/');
 
-  Future<bool> triggerFeed(String pondId, {double? amount}) async {
-    try {
-      final body = jsonEncode({'amount_grams': amount});
-      final r = await http.post(_uri('/api/ponds/$pondId/trigger-feed/'), headers: _defaultHeaders(), body: body).timeout(Duration(seconds: 5));
-      return r.statusCode == 201 || r.statusCode == 200;
-    } catch (e) {
-      debugPrint('ApiService triggerFeed error: $e');
-      return false;
-    }
-  }
+  // ── Feed Logs ──────────────────────────────────────────────
+  Future<List<dynamic>?> getFeedLogs({String? pondName, int limit = 30}) =>
+    _getList('/feed-logs/?${pondName != null ? "pond=$pondName&" : ""}limit=$limit');
+  Future<Map<String, dynamic>?> createFeedLog(Map<String, dynamic> data) => _post('/feed-logs/', data);
+
+  // ── Device ─────────────────────────────────────────────────
+  Future<Map<String, dynamic>?> getDevice(String serial) => _get('/devices/$serial/');
+  Future<Map<String, dynamic>?> getSyncStatus() => _get('/sync-status/');
+
+  // ── Commands (hardware control) ────────────────────────────
+  Future<Map<String, dynamic>?> sendManualFeed(String serial, {double portionGrams = 120}) =>
+    _post('/devices/$serial/feed/', {'portion_grams': portionGrams});
+
+  Future<Map<String, dynamic>?> sendFirmwareUpdate(String serial) =>
+    _post('/devices/$serial/firmware-update/', {});
+
+  Future<Map<String, dynamic>?> syncEeprom(String serial) =>
+    _post('/devices/$serial/sync/', {});
+
+  Future<Map<String, dynamic>?> getPendingCommands(String serial) =>
+    _get('/devices/$serial/commands/');
+
+  Future<Map<String, dynamic>?> ackCommand(String commandId) =>
+    _post('/commands/$commandId/ack/', {});
+
+  // ── Export ─────────────────────────────────────────────────
+  Future<Map<String, dynamic>?> exportLogs({
+    required String serial, required String from, required String to, required String format,
+  }) => _get('/export/?serial=$serial&from=$from&to=$to&format=$format');
+
+  // ── Telemetry (from device) ────────────────────────────────
+  Future<Map<String, dynamic>?> pushTelemetry(Map<String, dynamic> data) =>
+    _post('/telemetry/', data);
+
+  // ── Public POST (unauthenticated — register, password-reset, verify-email) ──
+  Future<Map<String, dynamic>?> postPublic(String path, Map<String, dynamic> body) =>
+      _post(path, body);
 }
