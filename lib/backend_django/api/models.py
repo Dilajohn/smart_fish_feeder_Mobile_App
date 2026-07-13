@@ -27,7 +27,7 @@ class Pond(models.Model):
     """A single fish pond with an associated feeder device."""
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ponds', null=True, blank=True)
     name         = models.CharField(max_length=100, unique=True)
-    feeder_serial= models.CharField(max_length=50)
+    feeder_serial= models.CharField(max_length=50, default='unknown')
     food_percent = models.IntegerField(default=100, validators=[MinValueValidator(0), MaxValueValidator(100)])
     next_feed_time = models.CharField(max_length=20, default='Offline')
     water_temp   = models.FloatField(default=25.0)
@@ -46,10 +46,10 @@ class FeedSchedule(models.Model):
     """Scheduled automatic feeding event."""
     id       = models.CharField(max_length=50, primary_key=True)
     pond     = models.ForeignKey(Pond, on_delete=models.CASCADE, related_name='schedules', to_field='name', db_column='pond_name')
-    hour     = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(23)])
-    minute   = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(59)])
-    duration_seconds = models.IntegerField(validators=[MinValueValidator(1)])
-    portion_grams    = models.IntegerField(validators=[MinValueValidator(1)])
+    hour     = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(23)], default=0)
+    minute   = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(59)], default=0)
+    duration_seconds = models.IntegerField(validators=[MinValueValidator(1)], default=1)
+    portion_grams    = models.IntegerField(validators=[MinValueValidator(1)], default=1)
     is_enabled = models.BooleanField(default=True)
     # 7-element boolean array: Mon-Sun
     weekdays   = models.JSONField(default=list)
@@ -66,10 +66,10 @@ class FeedLog(models.Model):
     """Record of a completed feeding event."""
     TRIGGER_CHOICES = [('scheduled', 'Scheduled'), ('manual', 'Manual')]
     id           = models.CharField(max_length=50, primary_key=True)
-    pond_name    = models.CharField(max_length=100, db_index=True)
+    pond_name    = models.CharField(max_length=100, db_index=True, default='unknown')
     timestamp    = models.DateTimeField(auto_now_add=True, db_index=True)
-    portion_grams = models.FloatField(validators=[MinValueValidator(0)])
-    trigger_type  = models.CharField(max_length=20, choices=TRIGGER_CHOICES)
+    portion_grams = models.FloatField(validators=[MinValueValidator(0)], default=0)
+    trigger_type  = models.CharField(max_length=20, choices=TRIGGER_CHOICES, default='manual')
     synced        = models.BooleanField(default=True)
 
     class Meta:

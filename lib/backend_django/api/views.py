@@ -256,12 +256,6 @@ class DeviceInfoViewSet(viewsets.ModelViewSet):
         return Response(DeviceCommandSerializer(cmds, many=True).data)
 
 
-# ── Command ACK (user/app side — kept for compatibility) ──────
-class CommandAckView(DeviceCommandAckView):
-    """Alias kept so existing URL conf still works."""
-    pass
-
-
 # ── Sync Status ───────────────────────────────────────────────
 class SyncStatusView(generics.RetrieveUpdateAPIView):
     """GET/PATCH /sync-status/ — EEPROM + cloud sync counters."""
@@ -364,6 +358,12 @@ class DeviceCommandAckView(APIView):
             return Response({'detail': 'Acknowledged.'})
         except DeviceCommand.DoesNotExist:
             return Response({'detail': 'Command not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+
+# ── Command ACK (user/app side — kept for compatibility) ──────
+class CommandAckView(DeviceCommandAckView):
+    """Alias kept so existing URL conf still works."""
+    pass
 
 
 # ── Export ────────────────────────────────────────────────────
